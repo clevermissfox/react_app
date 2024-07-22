@@ -556,6 +556,10 @@ h3 {
   /* aspect-ratio: 1; */
 }
 
+ul.date:is(.col) {
+  text-align: right;
+}
+
 /* MAIN Component */
 .main {
   padding-block: 3em;
