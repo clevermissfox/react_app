@@ -436,8 +436,8 @@ h3 {
   --_gap: 1em;
   --_padding-inline: 1em;
   --_padding-block: 0.5em;
-  --_starting-point: translateX(calc(var(--_icon-size) * 1.5));
-  --_ending-point: translateX(calc(var(--_icon-size) / 6 * -1));
+  --_starting-point: translateX(calc((var(--_icon-size) / 6 - 0.125em) * -1));
+  --_ending-point: translateX(calc(var(--_icon-size) * 1.5));
  
 
   background: var(--clr-neutral-800);
@@ -463,19 +463,19 @@ h3 {
     &::before {
       content: "";
       position: absolute;
-      background-color: oklch(100% 0 0 / 20%);
+      background-color: oklch(100% 0 0 / 10%);
       inset-block: calc((var(--_padding-block) / 2) * -1);
       aspect-ratio: 1;
       border-radius: 50%;
       z-index: -5;
-      border: 1px solid oklch(100% 0 0 / 25%);
+      border: 1px solid oklch(100% 0 0 / 12%);
       left: 0;
-      transform: var(--_starting-point);
+      transform: var(--_ending-point);
       transition: transform var(--theme-transition-dur);
     }
 
     &:has(input[type="checkbox"]:checked)::before {
-      transform: var(--_ending-point);
+      transform: var(--_starting-point);
     }
   }
 
@@ -492,7 +492,8 @@ h3 {
   }
 
   & .theme-img-wrapper-microsoft {
-    background-image: url("/public/assets/icons/microsoft/icon-windows_logo.svg");
+    background-image: url("/public/assets/icons/microsoft/icon-windows_logo-vector.svg");
+    background-size: 80%;
   }
 
   & .theme-img-wrapper-apple {
