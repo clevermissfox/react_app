@@ -46,7 +46,7 @@
 }
 
 html[data-theme="apple"] {
-  --clr-bg-body: url("/public/assets/images/img-apple_desktop-wallpaper-opacity.webp");
+  --clr-bg-body: url("/public/assets/images/img-apple_desktop-wallpaper-opacity.jpg");
 }
 
 html[data-theme="microsoft"] {
