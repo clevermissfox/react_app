@@ -329,12 +329,11 @@ body {
   text-wrap: pretty;
   margin: 0;
   background: var(--clr-neutral-900);
-  padding: 1em;
 
-  display: flex;
+  /* display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  min-height: 100vh; */
 
   &::before {
     content: "";
@@ -427,6 +426,8 @@ h3 {
 }
 
 /* PROJECT SPECIFIC STYLES */
+
+/* THEMETOGGLE Component */
 .theme-toggle {
   --_icon-size: 2.5ch;
   --_gap: 1em;
@@ -496,6 +497,8 @@ h3 {
   }
 }
 
+/* NAVBAR Component */
+
 .nav-bar {
   display: flex;
   justify-content: space-between;
@@ -551,6 +554,14 @@ h3 {
   align-content: center;
   inline-size: 1.25em;
   /* aspect-ratio: 1; */
+}
+
+/* MAIN Component */
+.main {
+  padding-block: 3em;
+  padding-inline: 1em;
+  block-size: 100vh;
+  block-size: 100dvh;
 }
 
 /* Apple Specific Styles */

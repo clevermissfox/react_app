@@ -5,7 +5,7 @@ import BatteryStatusIcon from "./BatteryStatusIcon";
 export default function NavBar() {
   const { theme } = useContext(ThemeContext);
   // const [isApple, setIsApple] = useState(theme === 'apple');
-  const [date, setDate] = useState(getDate());
+  const [date, setDate] = useState(getDate(theme));
 
   function getDate(theme) {
     const dates = new Date();
@@ -17,9 +17,11 @@ export default function NavBar() {
 
     if (theme === 'apple') {
         // setDate(todaysDay + ' ' + todaysMon + ' ' + todaysDate)
+        console.log('apple theme date')
         return todaysDay + ' ' + todaysMon + ' ' + todaysDate;
     } else {
         // setDate(todaysMonth + '/' + todaysDate + '/' + todaysYear)
+        console.log('mic theme date')
         return todaysMonth + '/' + todaysDate + '/' + todaysYear;
     } 
 }
