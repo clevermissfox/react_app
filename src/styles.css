@@ -6,13 +6,6 @@
   font-weight: 1 1000;
 }
 
-html[data-theme="apple"] {
-  --clr-bg-body: url("/public/assets/images/img-apple_desktop-wallpaper.png");
-}
-html[data-theme="microsoft"] {
-  --clr-bg-body: url("/public/assets/images/img-windows_desktop-wallpaper_2.webp");
-}
-
 :root {
   /* FONT SIZES */
   font-size: clamp(0.875rem, 0.6548rem + 1.2259vw, 1.125rem);
@@ -48,7 +41,16 @@ html[data-theme="microsoft"] {
   /* NUMERIC VALUES */
   --padding-default: 1.5em;
   --default-trans-dur: 400ms;
+  --theme-transition-dur: calc(var(--default-trans-dur) * 2);
   --timing-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+html[data-theme="apple"] {
+  --clr-bg-body: url("/public/assets/images/img-apple_desktop-wallpaper-opacity.webp");
+}
+
+html[data-theme="microsoft"] {
+  --clr-bg-body: url("/public/assets/images/img-windows_desktop-wallpaper_2.webp");
 }
 
 /* @media (prefers-color-scheme: dark) {
@@ -341,6 +343,7 @@ body {
     inset: 0;
     background: var(--clr-bg-body) center center/cover fixed;
     z-index: -5;
+    transition: background var(--theme-transition-dur) allow-discrete;
   }
 }
 
@@ -435,7 +438,7 @@ h3 {
   --_padding-block: 0.5em;
   --_starting-point: translateX(calc(var(--_icon-size) * 1.5));
   --_ending-point: translateX(calc(var(--_icon-size) / 6 * -1));
-  --_transition-dur: calc(var(--default-trans-dur) * 3);
+ 
 
   background: var(--clr-neutral-800);
   border: 2px solid var(--clr-neutral-750);
@@ -468,7 +471,7 @@ h3 {
       border: 1px solid oklch(100% 0 0 / 25%);
       left: 0;
       transform: var(--_starting-point);
-      transition: transform var(--_transition-dur);
+      transition: transform var(--theme-transition-dur);
     }
 
     &:has(input[type="checkbox"]:checked)::before {
@@ -509,6 +512,7 @@ h3 {
   inset-inline: 0;
   padding: 0.5em;
   color: var(--clr-neutral-100);
+  transition: background-color var(--theme-transition-dur), top var(--theme-transition-dur), bottom var(--theme-transition-dur);
 }
 
 .start-menu {
@@ -520,7 +524,7 @@ h3 {
   position: relative;
   inline-size: 1.5em;
   aspect-ratio: 1;
-  transition: scale var(--default-trans-dur);
+  transition: scale var(--theme-transition-dur), background-image var(--theme-transition-dur) allow-discrete;
 
   &:is(:hover, :focus-visible) {
     scale: 1.1;
@@ -556,6 +560,10 @@ h3 {
   /* aspect-ratio: 1; */
 }
 
+ul.date {
+  transition: flex-direction var(--theme-transition-dur);
+}
+
 ul.date:is(.col) {
   text-align: right;
 }
@@ -573,7 +581,8 @@ ul.date:is(.col) {
   .nav-bar {
     background-color: var(--clr-neutral-900);
     top: 0;
-    bottom: revert;
+    bottom: revert; 
+    transition: background-color var(--theme-transition-dur), top var(--theme-transition-dur), bottom var(--theme-transition-dur);
   }
 
   .start-btn {
@@ -592,6 +601,7 @@ ul.date:is(.col) {
     background-color: var(--clr-neutral-800);
     top: revert;
     bottom: 0;
+    transition: background-color var(--theme-transition-dur), top var(--theme-transition-dur), bottom var(--theme-transition-dur);
   }
 
   .start-btn {
