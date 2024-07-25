@@ -38,6 +38,17 @@
 
   --clr-bg-body: var(--clr-neutral-900);
 
+  /* colors -microsoft */
+  --clr-mic-neutral-150: ;
+  --clr-mic-neutral-200: ;
+  --clr-mic-neutral-300: ;
+  --clr-mic-neutral-500: oklch(29% 0 0); /*hsl(0, 0%, 17%), #2b2b2b #2c2c2c */
+  --clr-mic-neutral-550: oklch(28% 0 0); /*hsl(0, 0%, 16%), #292929 #2a2a2a #282828 */
+  --clr-mic-neutral-600: oklch(25% 0 0); /*hsl(0, 0%, 13%), #202020 */
+  --clr-mic-neutral-650: oklch(22% 0 0); /*hsl(0, 0%, 10%), #191919 */
+  --clr-mic-neutral-700: oklch(15% 0 0); /*hsl(0 0% 4%), #040404 */
+
+
   /* NUMERIC VALUES */
   --padding-default: 1.5em;
   --default-trans-dur: 400ms;
@@ -574,7 +585,15 @@ ul.date:is(.col) {
   padding-block: 3em;
   padding-inline: 1em;
   block-size: 100vh;
-  block-size: 100dvh;
+  block-size: 100svh;
+}
+
+/* FILEEXPLORER Component */
+.file-explorer {
+  position: absolute; 
+  top: 50%;
+  left: 50%;
+  /* outline: 2px solid red; */
 }
 
 /* Apple Specific Styles */
@@ -594,6 +613,24 @@ ul.date:is(.col) {
       transform: translateY(130%);
     }
   }
+
+  .file-explorer {
+    transition: all var(--default-trans-dur);
+
+    & header {
+      background-color: oklch(15% 0.00 0);
+      padding: 0.25em 0.5em;
+    }
+
+    & [aria-label="Close button"] {
+      background-color: red;
+      border-radius: 50%;
+      aspect-ratio: 1;
+      inline-size: 1ch;
+    }
+
+    
+  }
 }
 
 /* Microsoft Specific Styles */
@@ -611,6 +648,19 @@ ul.date:is(.col) {
     &::before {
       top: 0;
       transform: translateY(-130%);
+    }
+  }
+
+  .file-explorer {
+    transition: all var(--default-trans-dur);
+
+    & [aria-label="Close button"] {
+      display: grid;
+      place-content: center;
+      aspect-ratio: 1;
+      inline-size: 2ch;
+
+      & img {inline-size: 100%;}
     }
   }
 }
