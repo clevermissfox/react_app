@@ -48,9 +48,19 @@
   --clr-mic-neutral-650: oklch(22% 0 0); /*hsl(0, 0%, 10%), #191919 */
   --clr-mic-neutral-700: oklch(15% 0 0); /*hsl(0 0% 4%), #040404 */
 
+  /* colors - apple */
+  --clr-apple-dialog-btn-close: #ED6A5E;
+  --clr-apple-dialog-btn-minimize: #F4BF4F; 
+  /* these buttons are 12 x 12 with an inside stroke of black with 12% transparency and a stroke with of 0.5 and 20px of padding to the top and the left, 8px of gap between them */
+  --clr-apple-dialog-btn-maximize: #61C553;
+  --clr-apple-dialog-utility-bar: #343434;
+  --clr-apple-dialog-body: #222222; /* same as hsl 0 0 13% and oklch(25% 0 0) */
+  --clr-apple-dialog-accent: #9A55A3; 
+  /* this is my accent color, default is blue. could set as edico accent color plum */
 
   /* NUMERIC VALUES */
   --padding-default: 1.5em;
+  --br-default: 0.25em;
   --default-trans-dur: 400ms;
   --theme-transition-dur: calc(var(--default-trans-dur) * 2);
   --timing-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
@@ -635,15 +645,19 @@ ul.date:is(.col) {
   .main {display: grid; padding-block-end: 0.5em;}
 
   .taskbar {
+    position: fixed;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
     border-radius: 1em;
-    background-color: oklch(100% 0 0 / 10%);
+    background-color: oklch(0% 0 0 / 40%);
+    backdrop-filter: blur(0.5em);
     border: 0.8px solid oklch(100% 0 0 / 40%);
     padding: 0.5em;
     width: max-content;
     margin-inline: auto;
 
     align-items: center;
-    align-self: end;
 
     & > button {
       flex-shrink: 0;
@@ -742,4 +756,33 @@ ul.date:is(.col) {
       & img {inline-size: 100%;}
     }
   }
+}
+
+.portfolio-grid-wrapper {
+  background-color: var(--clr-neutral-100);
+  height: 75vh;
+  width: min(100%, 100ch);
+  margin-inline: auto;
+  padding: var(--padding-default);
+  border-radius: var(--br-default);
+  overflow: auto;
+}
+
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 30ch), 1fr));
+  gap: 1em;
+}
+
+dialog[open]:has(iframe) {
+  width: min(100% - 4rem, 80ch);
+  height: 90%;
+  /* overscroll-behavior: contain; */
+  margin-inline: auto;
+
+  &::backdrop {
+    background-color: oklch(0% 0 0 / 40%);
+  }
+
+  & iframe {height: 100%;}
 }

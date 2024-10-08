@@ -1,6 +1,6 @@
-export default function AppleExplorer() {
+export default function AppleTaskbar() {
   return (
-    <div class="taskbar">
+    <div className="taskbar">
         <button data-name="Finder">
             <img  src="/assets/icons/apple/application-icons/icon-apple_finder-logo.png" alt="" />
         </button>
