@@ -1,13 +1,18 @@
-import { useContext, useState, useCallback, useRef } from "react";
+import { useContext, useState, useCallback } from "react";
+import { useNavbarHeight } from "../hooks/useNavBarHeight";
 import ThemeContext from "../context/ThemeContext";
-import AppleTaskbar from "./AppleComponents/AppleTaskbar";
 import { supabase } from "../config/supabase-config";
+import AppleTaskbar from "./AppleComponents/AppleTaskbar";
+import Dialog from "./Dialog";
 
 export default function Main() {
     const { theme } = useContext(ThemeContext);
     const [portfolioData, setPortfolioData] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
-    const dialogRef = useRef(null);
+
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const navBarHeight = useNavbarHeight();
+
     const [currentIframeUrl, setCurrentIframeUrl] = useState(null);
     const [error, setError] = useState(null);
 
@@ -17,12 +22,12 @@ export default function Main() {
         try {
             const { data, error } = await supabase
               .from('Live-Projects')
-              .select('*');
+              .select('*')
+              .order('priority', { ascending: true });
             
             if (error) throw error;
             
             setPortfolioData(data);
-            console.log('Fetched data:', data);
         } catch (error) {
             console.error('Error fetching data:', error.message);
             setError(error.message);
@@ -31,15 +36,20 @@ export default function Main() {
         }
     }, []);
 
-    function handleButtonClick (url) {
+    function handlePortfolioItemClick (url) {
         setCurrentIframeUrl(url);
-        dialogRef.current.showModal();
-      };
+        openDialog();
+    };
 
-    function handleCloseIframeModal() {
-        dialogRef.current.close();
+    function openDialog() {
+        setIsDialogOpen(true);
+    }
+
+    function closeDialog() {
+        setIsDialogOpen(false);
         setCurrentIframeUrl(null);
     }
+
 
     return (
         <main className="main">
@@ -53,7 +63,7 @@ export default function Main() {
             <div className="portfolio-grid-wrapper">
                 <div className="portfolio-grid">
                     {portfolioData.map(data => (
-                        <button onClick={() => handleButtonClick(data.url)} data-id={data.id} key={data.id} className="portfolio-img-wrapper">
+                        <button onClick={() => handlePortfolioItemClick(data.url)} data-id={data.id} key={data.id} className="portfolio-img-wrapper">
                             <h2 className="visually-hidden">{data.name}</h2>
                             <img src={data.imgUrl} alt={data.name} />
                         </button>
@@ -61,8 +71,19 @@ export default function Main() {
                 </div>
             </div>
             }
+            <Dialog isDialogOpen={isDialogOpen} onDialogClose={closeDialog}>
+                {currentIframeUrl && (
+                <iframe
+                    src={currentIframeUrl}
+                    title="Portfolio Item"
+                    height="100%"
+                    width="100%"
+                    frameBorder="0"
+                ></iframe>
+                )}
+            </Dialog>
 
-            <dialog ref={dialogRef}>
+            {/* <dialog ref={dialogRef}>
                 {currentIframeUrl && (
                 <iframe
                     src={currentIframeUrl}
@@ -73,7 +94,7 @@ export default function Main() {
                 ></iframe>
                 )}
                 <button onClick={handleCloseIframeModal}>Close</button>
-            </dialog>
+            </dialog> */}
         </main>
     )
 }
