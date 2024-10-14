@@ -756,7 +756,6 @@ ul.date:is(.col) {
       & img {inline-size: 100%;}
     }
   }
-}
 
 .portfolio-grid-wrapper {
   background-color: var(--clr-neutral-100);
@@ -774,15 +773,4 @@ ul.date:is(.col) {
   gap: 1em;
 }
 
-dialog[open]:has(iframe) {
-  width: min(100% - 4rem, 80ch);
-  height: 90%;
-  /* overscroll-behavior: contain; */
-  margin-inline: auto;
 
-  &::backdrop {
-    background-color: oklch(0% 0 0 / 40%);
-  }
-
-  & iframe {height: 100%;}
-}
