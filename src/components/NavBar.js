@@ -23,10 +23,8 @@ export default function NavBar() {
 
     if (theme === "apple") {
       return todaysDay + " " + todaysMon + " " + todaysDate;
-
     } else {
       return todaysMonth + "/" + todaysDate + "/" + todaysYear;
-      
     }
   }
 
@@ -71,22 +69,34 @@ export default function NavBar() {
           }
         ></button>
       </div>
-      {theme === 'microsoft' &&
-        <div class="taskbar">
+      {theme === "microsoft" && (
+        <div className="taskbar">
           <button>
-            <img src="/assets/icons/apple/application-icons/icon-apple_photos-logo.webp" alt="" />
+            <img
+              src="/assets/icons/apple/application-icons/icon-apple_photos-logo.webp"
+              alt=""
+            />
           </button>
           <button>
-            <img src="/assets/icons/apple/application-icons/icon-apple_photos-logo.webp" alt="" />
+            <img
+              src="/assets/icons/apple/application-icons/icon-apple_photos-logo.webp"
+              alt=""
+            />
           </button>
           <button>
-            <img src="/assets/icons/apple/application-icons/icon-apple_photos-logo.webp" alt="" />
+            <img
+              src="/assets/icons/apple/application-icons/icon-apple_photos-logo.webp"
+              alt=""
+            />
           </button>
           <button>
-            <img src="/assets/icons/apple/application-icons/icon-apple_photos-logo.webp" alt="" />
+            <img
+              src="/assets/icons/apple/application-icons/icon-apple_photos-logo.webp"
+              alt=""
+            />
           </button>
         </div>
-      }
+      )}
       <div className="nav-bar-tools row ai-cen gap-quarter">
         <div className="nav-bar-tool" aria-label="bluetooth">
           <img
