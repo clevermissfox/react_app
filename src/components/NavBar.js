@@ -73,25 +73,25 @@ export default function NavBar() {
         <div className="taskbar">
           <button>
             <img
-              src="/assets/icons/apple/application-icons/icon-apple_photos-logo.webp"
+              src="/assets/icons/microsoft/icon-windows_chrome-logo.svg"
               alt=""
             />
           </button>
           <button>
             <img
-              src="/assets/icons/apple/application-icons/icon-apple_photos-logo.webp"
+              src="/assets/icons/microsoft/icon-windows_chrome-logo.svg"
               alt=""
             />
           </button>
           <button>
             <img
-              src="/assets/icons/apple/application-icons/icon-apple_photos-logo.webp"
+              src="/assets/icons/microsoft/icon-windows_chrome-logo.svg"
               alt=""
             />
           </button>
           <button>
             <img
-              src="/assets/icons/apple/application-icons/icon-apple_photos-logo.webp"
+              src="/assets/icons/microsoft/icon-windows_chrome-logo.svg"
               alt=""
             />
           </button>
@@ -115,7 +115,6 @@ export default function NavBar() {
           className={`date xsmall gap-quarter ${
             theme === "apple" ? "row" : "col"
           }`}
-          role="list"
         >
           {theme === "microsoft" && <li data-time>{time}</li>}
           <li data-date>{date}</li>

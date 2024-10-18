@@ -18,12 +18,16 @@ const BatteryStatusIcon = () => {
   const [batteryHTML, setBatteryHTML] = useState(
     '<i class="fa-solid fa-battery-full fa-sm"></i>'
   );
+  const [batteryLevel, setBatteryLevel] = useState(null);
 
   useEffect(() => {
     let battery;
 
     const updateBatteryIcon = () => {
       const iconClass = getBatteryIconClass(battery.charging, battery.level);
+      const levelPercentage = Math.round(battery.level * 100);
+
+      setBatteryLevel(levelPercentage);
       setBatteryHTML(`<i class="fa-solid ${iconClass} fa-sm"></i>`);
     };
 
@@ -50,7 +54,16 @@ const BatteryStatusIcon = () => {
     };
   }, []);
 
-  return <div dangerouslySetInnerHTML={{ __html: batteryHTML }} />;
+  return (
+    <div
+      title={
+        batteryLevel !== null
+          ? `${batteryLevel}%`
+          : "Battery status unavailable"
+      }
+      dangerouslySetInnerHTML={{ __html: batteryHTML }}
+    />
+  );
 };
 
 export default BatteryStatusIcon;

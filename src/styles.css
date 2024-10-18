@@ -1,7 +1,8 @@
 /* SETUP and RESET */
 @font-face {
   font-family: "SF Pro";
-  src: local("SF Pro"), url("/public/assets/fonts/apple/sf-pro.woff2") format("woff2"),
+  src: local("SF Pro"),
+    url("/public/assets/fonts/apple/sf-pro.woff2") format("woff2"),
     url("/public/assets/fonts/apple/sf-pro.woff") format("woff");
   font-weight: 1 1000;
 }
@@ -32,10 +33,10 @@
   --clr-neutral-750: oklch(32% 0 0);
   --clr-neutral-800: oklch(28% 0 0);
   --clr-neutral-900: oklch(0% 0 0);
-  --clr-accent: #A588CA;
+  --clr-accent: #a588ca;
   --clr-brand-accent: #cca6d4;
   /* --clr-brand-accent-alpha: ; */
-  --clr-brand-accent-2: #A588CA;
+  --clr-brand-accent-2: #a588ca;
 
   --clr-bg-body: var(--clr-neutral-900);
 
@@ -44,19 +45,22 @@
   --clr-mic-neutral-200: ;
   --clr-mic-neutral-300: ;
   --clr-mic-neutral-500: oklch(29% 0 0); /*hsl(0, 0%, 17%), #2b2b2b #2c2c2c */
-  --clr-mic-neutral-550: oklch(28% 0 0); /*hsl(0, 0%, 16%), #292929 #2a2a2a #282828 */
+  --clr-mic-neutral-550: oklch(
+    28% 0 0
+  ); /*hsl(0, 0%, 16%), #292929 #2a2a2a #282828 */
   --clr-mic-neutral-600: oklch(25% 0 0); /*hsl(0, 0%, 13%), #202020 */
   --clr-mic-neutral-650: oklch(22% 0 0); /*hsl(0, 0%, 10%), #191919 */
   --clr-mic-neutral-700: oklch(15% 0 0); /*hsl(0 0% 4%), #040404 */
+  --clr-mic-dialog-btn-close: #c42c1d;
 
   /* colors - apple */
-  --clr-apple-dialog-btn-close: #ED6A5E;
-  --clr-apple-dialog-btn-minimize: #F4BF4F; 
+  --clr-apple-dialog-btn-close: #ed6a5e;
+  --clr-apple-dialog-btn-minimize: #f4bf4f;
   /* these buttons are 12 x 12 with an inside stroke of black with 12% transparency and a stroke with of 0.5 and 20px of padding to the top and the left, 8px of gap between them */
-  --clr-apple-dialog-btn-maximize: #61C553;
+  --clr-apple-dialog-btn-maximize: #61c553;
   --clr-apple-dialog-utility-bar: #343434;
   --clr-apple-dialog-body: #222222; /* same as hsl 0 0 13% and oklch(25% 0 0) */
-  --clr-apple-dialog-accent: #9A55A3; 
+  --clr-apple-dialog-accent: #9a55a3;
   /* this is my accent color, default is blue. could set as edico accent color plum */
 
   /* NUMERIC VALUES */
@@ -125,8 +129,8 @@ a {
   display: inline-block;
 }
 
-:is(ul[role="list"], ol[role="list"]) {
-  list-style: none;
+:is(ul, ol) {
+  list-style: "";
 }
 
 input:not([type="checkbox"], [type="radio"]),
@@ -225,7 +229,9 @@ button {
   block-size: 1px;
   inline-size: 1px;
   overflow: hidden;
-  position: absolute;
+  position: fixed;
+  top: -100%;
+  left: -100%;
   white-space: nowrap;
 }
 
@@ -461,7 +467,6 @@ h3 {
   --_padding-block: 0.5em;
   --_starting-point: translateX(calc((var(--_icon-size) / 6 - 0.125em) * -1));
   --_ending-point: translateX(calc(var(--_icon-size) * 1.5));
- 
 
   background: var(--clr-neutral-800);
   border: 2px solid var(--clr-neutral-750);
@@ -536,7 +541,8 @@ h3 {
   inset-inline: 0;
   padding: 0.5em;
   color: var(--clr-neutral-100);
-  transition: background-color var(--theme-transition-dur), top var(--theme-transition-dur), bottom var(--theme-transition-dur);
+  transition: background-color var(--theme-transition-dur),
+    top var(--theme-transition-dur), bottom var(--theme-transition-dur);
 }
 
 .start-menu {
@@ -548,7 +554,8 @@ h3 {
   position: relative;
   inline-size: 1.5em;
   aspect-ratio: 1;
-  transition: scale var(--theme-transition-dur), background-image var(--theme-transition-dur) allow-discrete;
+  transition: scale var(--theme-transition-dur),
+    background-image var(--theme-transition-dur) allow-discrete;
 
   &:is(:hover, :focus-visible) {
     scale: 1.1;
@@ -575,7 +582,6 @@ h3 {
     inline-size: 100%;
     block-size: auto;
   }
-
 }
 
 .nav-bar-tool {
@@ -620,16 +626,17 @@ ul.date:is(.col) {
 
 /* FILEEXPLORER Component */
 .file-explorer {
-  position: absolute; 
+  position: absolute;
   top: 50%;
   left: 50%;
   /* outline: 2px solid red; */
 }
 
 /* DIALOG Component */
-dialog[open] {  
+dialog[open] {
+  color: inherit;
   --_pos-block: auto auto;
-  margin-inline: auto;  
+  margin-inline: auto;
   max-width: 100vw;
   max-height: 100vh;
   max-height: 100dvh;
@@ -642,19 +649,34 @@ dialog[open] {
   &:is(.maximized) {
     width: 100vw;
     height: 100vh;
-    height: 100dvh; 
+    height: 100dvh;
     inset-inline: 0;
     inset-block: 0;
+  }
+
+  &:is(.minimized) {
+    width: revert;
+    height: revert;
+
+    > *:not(.utility-bar) {
+      height: 0;
+      width: 0;
+      overflow: hidden;
+    }
   }
 
   &::backdrop {
     background-color: oklch(0% 0 0 / 40%);
   }
 
-  & .utility-bar {position: sticky; top: 0;}
-  & iframe {display: block;}
+  & .utility-bar {
+    position: sticky;
+    top: 0;
+  }
+  & iframe {
+    display: block;
+  }
 }
-
 
 /* PORTFOLIO GRID */
 .portfolio-grid-wrapper {
@@ -673,17 +695,13 @@ dialog[open] {
   gap: 1em;
 }
 
-
-
-
 /* Apple Specific Styles */
 [data-theme="apple"] {
-    /* NAVBAR Component in APPLE Theme */
+  /* NAVBAR Component in APPLE Theme */
   .nav-bar {
     background-color: var(--clr-neutral-900);
     top: 0;
-    bottom: revert; 
-    transition: background-color var(--theme-transition-dur), top var(--theme-transition-dur), bottom var(--theme-transition-dur);
+    bottom: revert;
   }
 
   .start-btn {
@@ -695,7 +713,10 @@ dialog[open] {
     }
   }
 
-  .main {display: grid; padding-block-end: 0.5em;}
+  .main {
+    display: grid;
+    padding-block-end: 0.5em;
+  }
 
   /* TASKBAR Component in APPLE Theme */
   .taskbar {
@@ -718,7 +739,7 @@ dialog[open] {
       border-radius: 0.5em;
       width: 3rem;
       position: relative;
-      
+
       &:is(.btn-bg) {
         background-color: var(--clr-neutral-100);
       }
@@ -746,9 +767,13 @@ dialog[open] {
         transition: opacity var(--default-trans-dur);
       }
 
-      &:is(:hover, :focus-visible)::before {opacity: 1;}
+      &:is(:hover, :focus-visible)::before {
+        opacity: 1;
+      }
 
-      & img.img-cover {object-fit: cover;}
+      & img.img-cover {
+        object-fit: cover;
+      }
     }
   }
 
@@ -756,7 +781,7 @@ dialog[open] {
     transition: all var(--default-trans-dur);
 
     & header {
-      background-color: oklch(15% 0.00 0);
+      background-color: oklch(15% 0 0);
       padding: 0.25em 0.5em;
     }
 
@@ -765,20 +790,31 @@ dialog[open] {
       border-radius: 50%;
       aspect-ratio: 1;
       inline-size: 1ch;
-    }    
+    }
   }
 
   /* DIALOG Component in APPLE Theme */
   dialog[open] {
     --_pos-block: var(--nav-bar-height) 0;
 
-    &:is(.maximized) {--_pos-block: 0 0;}
-    
+    &:is(.maximized) {
+      --_pos-block: 0 0;
+    }
+
+    &:is(.minimized) [data-btn-minimize-dialog] {
+      filter: saturate(40%);
+      cursor: not-allowed;
+
+      &:is(:hover, :focus-visible) i {
+        opacity: 0;
+      }
+    }
+
     .utility-bar {
       background-color: var(--clr-apple-dialog-utility-bar);
       padding: 0.5em;
       gap: 0.5rem;
-      
+
       & > button {
         --_btn-utility-bg: var(--clr-apple-dialog-btn-close);
         width: 0.75rem;
@@ -787,12 +823,24 @@ dialog[open] {
         border-radius: 50%;
         background-color: var(--_btn-utility-bg);
         color: var(--clr-apple-dialog-utility-bar);
-        
-        &:is([data-btn-minimize-dialog]) {--_btn-utility-bg: var(--clr-apple-dialog-btn-minimize);}
-        &:is([data-btn-maximize-dialog]) {--_btn-utility-bg: var(--clr-apple-dialog-btn-maximize);}
-        
-        & > i {font-size: 0.5em; opacity: 0; transition: opacity var(--default-trans-dur);}
-        &:is(:hover, :focus-visible) > i {opacity: 1;}
+
+        &:is([data-btn-minimize-dialog]) {
+          --_btn-utility-bg: var(--clr-apple-dialog-btn-minimize);
+        }
+
+        &:is([data-btn-maximize-dialog]) {
+          --_btn-utility-bg: var(--clr-apple-dialog-btn-maximize);
+        }
+
+        & > i {
+          font-size: 0.5em;
+          opacity: 0;
+          transition: opacity var(--default-trans-dur);
+        }
+
+        &:is(:hover, :focus-visible) > i {
+          opacity: 1;
+        }
       }
     }
   }
@@ -800,12 +848,11 @@ dialog[open] {
 
 /* Microsoft Specific Styles */
 [data-theme="microsoft"] {
-    /* NAVBAR Component in MICROSOFT Theme */
+  /* NAVBAR Component in MICROSOFT Theme */
   .nav-bar {
     background-color: var(--clr-neutral-800);
     top: revert;
     bottom: 0;
-    transition: background-color var(--theme-transition-dur), top var(--theme-transition-dur), bottom var(--theme-transition-dur);
   }
 
   .start-btn {
@@ -836,14 +883,39 @@ dialog[open] {
       aspect-ratio: 1;
       inline-size: 2ch;
 
-      & img {inline-size: 100%;}
+      & img {
+        inline-size: 100%;
+      }
     }
   }
 
   /* DIALOG Component in MICROSOFT Theme */
-  dialog:is([open], .maximized) {
+  dialog:is([open]) {
     --_pos-block: 0 var(--nav-bar-height);
+
+    &:is(.maximized) {
+      --_pos-block: 0 0;
+    }
+
+    & .utility-bar {
+      background-color: var(--clr-mic-neutral-700);
+
+      & > button {
+        padding: 0.5em 1.2em;
+        transition: background-color var(--default-trans-dur);
+      }
+
+      &
+        :is([data-btn-minimize-dialog], [data-btn-maximize-dialog]):is(
+          :hover,
+          :focus-visible
+        ) {
+        background-color: var(--clr-mic-neutral-650);
+      }
+
+      & :is([data-btn-close-dialog]):is(:hover, :focus-visible) {
+        background-color: var(--clr-mic-dialog-btn-close);
+      }
+    }
   }
 }
-
-
