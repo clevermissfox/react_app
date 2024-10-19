@@ -225,14 +225,16 @@ button {
 
 .visually-hidden {
   clip: rect(0 0 0 0);
-  clip-path: inset(50%);
-  block-size: 1px;
-  inline-size: 1px;
+  clip-path: inset(100%);
+  block-size: 0px;
+  inline-size: 0px;
   overflow: hidden;
   position: fixed;
   top: -100%;
   left: -100%;
   white-space: nowrap;
+  pointer-events: none;
+  visibility: hidden;
 }
 
 /* GRID AND FLEX UTILITY CLASSES */
