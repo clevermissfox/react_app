@@ -6,10 +6,9 @@ const THEMES = {
   MICROSOFT: "microsoft",
 };
 
-
 export default function ThemeProvider({ children }) {
-  const [isAppleTheme, setIsAppleTheme] = useState(true); // Default to Apple theme
-  const [theme, setTheme] = useState(THEMES.APPLE); // Initialize with Apple theme
+  const [isAppleTheme, setIsAppleTheme] = useState(false); // Default to Apple theme
+  const [theme, setTheme] = useState(THEMES.MICROSOFT); // Initialize with Apple theme
 
   const toggleTheme = () => {
     setIsAppleTheme((prev) => !prev); // Toggle the theme state

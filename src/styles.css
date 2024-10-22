@@ -73,11 +73,11 @@
 }
 
 html[data-theme="apple"] {
-  --clr-bg-body: url("/public/assets/images/img-apple_desktop-wallpaper-opacity.jpg");
+  --clr-bg-body: url("/public/assets/images/wallpapers/img-apple_desktop-wallpaper-opacity.jpg");
 }
 
 html[data-theme="microsoft"] {
-  --clr-bg-body: url("/public/assets/images/img-windows_desktop-wallpaper_2.webp");
+  --clr-bg-body: url("/public/assets/images/wallpapers/img-windows_desktop-wallpaper_2.webp");
 }
 
 /* @media (prefers-color-scheme: dark) {
@@ -85,7 +85,7 @@ html[data-theme="microsoft"] {
       --clr-primary: #;
       --clr-neutral-100: #FFF;
       --clr-neutral-900: #000;
-  
+
       --clr-bg-body: #;
       --clr-bg-card: #;
   }
@@ -461,6 +461,8 @@ h3 {
 
 /* PROJECT SPECIFIC STYLES */
 
+/* MARK Global */
+
 /* THEMETOGGLE Component */
 .theme-toggle {
   --_icon-size: 2.5ch;
@@ -646,10 +648,12 @@ dialog[open] {
   height: calc(100dvh - var(--nav-bar-height));
   width: min(100% - 2rem, 100ch);
   inset-block: var(--_pos-block);
+  border: none;
+  border-radius: var(--br-default);
   transition: all var(--default-trans-dur);
 
   &:is(.maximized) {
-    width: 100vw;
+    width: calc(100vw - 8px);
     height: 100vh;
     height: 100dvh;
     inset-inline: 0;
@@ -697,7 +701,7 @@ dialog[open] {
   gap: 1em;
 }
 
-/* Apple Specific Styles */
+/* MARK Apple Specific Styles */
 [data-theme="apple"] {
   /* NAVBAR Component in APPLE Theme */
   .nav-bar {
@@ -848,7 +852,7 @@ dialog[open] {
   }
 }
 
-/* Microsoft Specific Styles */
+/* MARK Microsoft Specific Styles */
 [data-theme="microsoft"] {
   /* NAVBAR Component in MICROSOFT Theme */
   .nav-bar {
@@ -876,18 +880,31 @@ dialog[open] {
     width: 2rem;
   }
 
-  .file-explorer {
-    transition: all var(--default-trans-dur);
+  .main {
+    padding-block: 1.5em;
+  }
 
-    & [aria-label="Close button"] {
-      display: grid;
-      place-content: center;
-      aspect-ratio: 1;
-      inline-size: 2ch;
+  .microsoft-desktop {
+    display: grid;
+    grid-row-gap: 1.5em;
+    grid-template-rows: repeat(4, fit-content(16ch));
+    grid-template-columns: repeat(2, fit-content(16ch));
+  }
 
-      & img {
-        inline-size: 100%;
-      }
+  .wind-desktop-btn {
+    inline-size: min(100%, 8ch);
+
+    & > * {
+      margin-inline: auto;
+    }
+
+    .wind-desktop-icon {
+      scale: 0.85;
+      transition: scale var(--default-trans-dur);
+    }
+
+    &:is(:hover, :focus-visible) .wind-desktop-icon {
+      scale: 1;
     }
   }
 

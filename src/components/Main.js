@@ -4,6 +4,7 @@ import ThemeContext from "../context/ThemeContext";
 import { supabase } from "../config/supabase-config";
 import AppleTaskbar from "./AppleComponents/AppleTaskbar";
 import Dialog from "./Dialog";
+import MicrosoftDesktop from "./MicrosoftComponents/MicrosoftDesktop";
 
 export default function Main() {
   const { theme } = useContext(ThemeContext);
@@ -53,7 +54,11 @@ export default function Main() {
   return (
     <main className="main">
       {theme === "apple" && <AppleTaskbar />}
-      {theme === "microsoft" && <p>This is microsoft main</p>}
+      {theme === "microsoft" && (
+        <>
+          <MicrosoftDesktop />
+        </>
+      )}
       <button onClick={fetchData} disabled={isLoading || portfolioData}>
         {isLoading
           ? "Loading..."
