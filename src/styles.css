@@ -496,6 +496,8 @@ h3 {
       content: "";
       position: absolute;
       background-color: oklch(100% 0 0 / 10%);
+      mask: radial-gradient(#000 0 0) padding-box exclude,
+        radial-gradient(#000 0 0);
       inset-block: calc((var(--_padding-block) / 2) * -1);
       aspect-ratio: 1;
       border-radius: 50%;
