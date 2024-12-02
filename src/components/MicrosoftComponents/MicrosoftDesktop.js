@@ -1,4 +1,18 @@
+import { useEffect, useRef } from "react";
+
 export default function MicrosoftDesktop() {
+  const dialogCalRef = useRef();
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://assets.calendly.com/assets/external/widget.js";
+    script.async = true;
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
   return (
     <div class="microsoft-desktop">
       <button className="folder wind-desktop-btn">
@@ -21,7 +35,10 @@ export default function MicrosoftDesktop() {
         <p className="small">Resume</p>
       </button>
 
-      <button className="calendar wind-desktop-btn">
+      <button
+        className="calendar wind-desktop-btn"
+        onClick={() => dialogCalRef.current.show()}
+      >
         <div className="wind-desktop-icon">
           <img
             src="/assets/images/image-icons/img-windows_calendar.png"
@@ -60,6 +77,26 @@ export default function MicrosoftDesktop() {
         </div>
         <p className="small">Contact</p>
       </button>
+      <dialog ref={dialogCalRef} className="dialog-cal">
+        <div
+          className="calendly-inline-widget"
+          data-url="https://calendly.com/edicodesigner/freeconsultation?hide_event_type_details=1&background_color=000&text_color=ffffff&primary_color=a588ca"
+          style={{ minWidth: "320px", height: "700px" }}
+        >
+          <button
+            btn-close=""
+            onClick={() => dialogCalRef.current.close()}
+            aria-label="Close Calendar"
+          >
+            <i class="fa fa-xmark" aria-hidden="true"></i>
+          </button>
+        </div>
+        <script
+          type="text/javascript"
+          src="https://assets.calendly.com/assets/external/widget.js"
+          async
+        ></script>
+      </dialog>
     </div>
   );
 }
