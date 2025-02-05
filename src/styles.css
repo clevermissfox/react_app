@@ -72,6 +72,7 @@
   --nav-bar-height: 2rem;
 
   interpolate-size: allow-keywords;
+  --test-redeploy: true;
 }
 
 html[data-theme="apple"] {
