@@ -18,6 +18,9 @@ jobs:
           script: |
             cd /home/admin/projects/react_app
             git pull origin main
-            npm install
-            npm run build
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            /home/admin/.nvm/versions/node/v23.3.0/bin/npm install
+            /home/admin/.nvm/versions/node/v23.3.0/bin/npm run build
             sudo systemctl restart nginx
+            echo "Deployment completed"
