@@ -22,6 +22,6 @@ jobs:
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
             /home/admin/.nvm/versions/node/v23.3.0/bin/npm install
             /home/admin/.nvm/versions/node/v23.3.0/bin/npm run build
-            sudo cp -r build/* /var/www/portfolio.edicodesigns.com/
+            sudo /bin/cp -r /home/admin/projects/react_app/build/* /var/www/portfolio.edicodesigns.com/
             sudo systemctl restart nginx || echo "Nginx restart failed" >> /var/log/deploy-errors.log
             echo "Deployment completed"
