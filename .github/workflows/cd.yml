@@ -23,5 +23,11 @@ jobs:
             /home/admin/.nvm/versions/node/v23.3.0/bin/npm install
             /home/admin/.nvm/versions/node/v23.3.0/bin/npm run build
             sudo /bin/cp -r /home/admin/projects/react_app/build/* /var/www/portfolio.edicodesigns.com/
-            sudo systemctl restart nginx || echo "Nginx restart failed" >> /var/log/deploy-errors.log
+            sudo chown -R www-data:www-data /var/www/portfolio.edicodesigns.com/
+            sudo chmod -R 755 /var/www/portfolio.edicodesigns.com/
+            sudo systemctl restart nginx
+            if [ $? -ne 0 ]; then
+              echo "Nginx restart failed" >> /var/log/deploy-errors.log
+              exit 1
+            fi
             echo "Deployment completed"
