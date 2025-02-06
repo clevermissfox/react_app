@@ -22,9 +22,9 @@ jobs:
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
             /home/admin/.nvm/versions/node/v23.3.0/bin/npm install
             /home/admin/.nvm/versions/node/v23.3.0/bin/npm run build
-            sudo /bin/cp -r /home/admin/projects/react_app/build/* /var/www/portfolio.edicodesigns.com/
-            sudo chown -R www-data:www-data /var/www/portfolio.edicodesigns.com/
-            sudo chmod -R 755 /var/www/portfolio.edicodesigns.com/
+            sudo /bin/cp -r /home/admin/projects/react_app/build/* /var/www/html/portfolio.edicodesigns.com/
+            sudo chown -R www-data:www-data /var/www/html/portfolio.edicodesigns.com/
+            sudo chmod -R 755 /var/www/html/portfolio.edicodesigns.com/
             sudo systemctl restart nginx
             if [ $? -ne 0 ]; then
               echo "Nginx restart failed" >> /var/log/deploy-errors.log
