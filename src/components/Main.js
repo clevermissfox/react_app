@@ -59,7 +59,7 @@ export default function Main() {
           <MicrosoftDesktop />
         </>
       )}
-      <p>Im updating on the live site yay!</p>
+      <p>Now are we updating upon redeploy??</p>
       <button onClick={fetchData} disabled={isLoading || portfolioData}>
         {isLoading
           ? "Loading..."

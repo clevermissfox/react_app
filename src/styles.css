@@ -70,9 +70,8 @@
   --theme-transition-dur: calc(var(--default-trans-dur) * 2);
   --timing-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
   --nav-bar-height: 2rem;
-
+  --am-i-working: true;
   interpolate-size: allow-keywords;
-  --test2-redeploy: true;
 }
 
 html[data-theme="apple"] {
