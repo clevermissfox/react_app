@@ -1,25 +1,28 @@
-import { useState, useEffect, useContext } from 'react';
-import ThemeContext from '../context/ThemeContext';
+import { useState, useEffect, useContext } from "react";
+import ThemeContext from "../context/ThemeContext";
 
-export function useNavbarHeight() {
-  const [navbarHeight, setNavbarHeight] = useState(0);
+export function useNavBarHeight() {
+  const [navBarHeight, setNavBarHeight] = useState(0);
   const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
-    const updateNavbarHeight = () => {
-      const navbar = document.querySelector('.nav-bar');
-      if (navbar) {
-        const height = navbar.offsetHeight;
-        setNavbarHeight(height);
-        document.documentElement.style.setProperty('--_nav-bar-height', `${height}px`);
+    const updateNavBarHeight = () => {
+      const navBar = document.querySelector(".nav-bar");
+      if (navBar) {
+        const height = navBar.offsetHeight;
+        setNavBarHeight(height);
+        document.documentElement.style.setProperty(
+          "--nav-bar-height",
+          `${height}px`
+        );
       }
     };
 
-    updateNavbarHeight();
-    window.addEventListener('resize', updateNavbarHeight);
+    updateNavBarHeight();
+    window.addEventListener("resize", updateNavBarHeight);
 
-    return () => window.removeEventListener('resize', updateNavbarHeight);
+    return () => window.removeEventListener("resize", updateNavBarHeight);
   }, [theme]); // Re-run when theme changes
 
-  return navbarHeight;
+  return navBarHeight;
 }

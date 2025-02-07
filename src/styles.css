@@ -70,7 +70,6 @@
   --theme-transition-dur: calc(var(--default-trans-dur) * 2);
   --timing-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
   --nav-bar-height: 2rem;
-  --am-i-working: true;
   interpolate-size: allow-keywords;
 }
 
@@ -654,7 +653,12 @@ dialog[open] {
   inset-block: var(--_pos-block);
   border: none;
   border-radius: var(--br-default);
+  overflow-y: auto;
   transition: all var(--default-trans-dur);
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   &:is(.maximized) {
     width: calc(100vw - 8px);

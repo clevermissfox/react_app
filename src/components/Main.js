@@ -1,5 +1,5 @@
 import { useContext, useState, useCallback } from "react";
-import { useNavbarHeight } from "../hooks/useNavBarHeight";
+import { useNavBarHeight } from "../hooks/useNavBarHeight";
 import ThemeContext from "../context/ThemeContext";
 import { supabase } from "../config/supabase-config";
 import AppleTaskbar from "./AppleComponents/AppleTaskbar";
@@ -10,13 +10,13 @@ export default function Main() {
   const { theme } = useContext(ThemeContext);
   const [portfolioData, setPortfolioData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const [currentIframeUrl, setCurrentIframeUrl] = useState(null);
   const [error, setError] = useState(null);
-  //Set NavBar Height on a custom property for css
-  useNavbarHeight();
+
+  // set navbar height for css
+  useNavBarHeight();
 
   const fetchData = useCallback(async () => {
     setIsLoading(true);
