@@ -12,10 +12,11 @@ export default function Main() {
   const [isLoading, setIsLoading] = useState(false);
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const navBarHeight = useNavbarHeight();
 
   const [currentIframeUrl, setCurrentIframeUrl] = useState(null);
   const [error, setError] = useState(null);
+  //Set NavBar Height on a custom property for css
+  useNavbarHeight();
 
   const fetchData = useCallback(async () => {
     setIsLoading(true);
