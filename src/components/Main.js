@@ -60,7 +60,6 @@ export default function Main() {
           <MicrosoftDesktop />
         </>
       )}
-      <p>Looks like we are in business?!?</p>
       <button onClick={fetchData} disabled={isLoading || portfolioData}>
         {isLoading
           ? "Loading..."
