@@ -463,7 +463,7 @@ h3 {
 
 /* PROJECT SPECIFIC STYLES */
 
-/* MARK Global */
+/* MARK: Global */
 
 /* THEMETOGGLE Component */
 .theme-toggle {
@@ -695,13 +695,23 @@ dialog[open] {
 
 .dialog-cal[open] {
   overflow: auto;
+  margin: auto;
   max-width: fit-content;
-  height: fit-content;
+  max-height: 100vh;
+  max-height: 100dvh;
+  height: min(600px, 100vh - var(--nav-bar-height));
+  height: min(600px, 100dvh - var(--nav-bar-height));
+  scrollbar-gutter: stable;
   .calendly-inline-widget {
     position: relative;
     & [btn-close] {
-      right: auto;
-      left: 0;
+      padding-block-start: 0.125em;
+      padding-inline-end: 0.5em;
+      position: static;
+      float: right;
+      top: 0;
+      left: auto;
+      right: 0;
       color: var(--clr-neutral-900);
     }
   }
@@ -765,14 +775,18 @@ dialog[open] {
 
     & > button {
       flex-shrink: 0;
-      border-radius: 0.5em;
+      border-radius: 18%;
       width: 3rem;
       position: relative;
 
       &:is(.btn-bg) {
         background-color: var(--clr-neutral-100);
+        /* Matches data-name containing "acrobat", case-insensitively */
+        &:is([data-name*="Acrobat"]) {
+          background-color: #f91101;
+        }
       }
-
+      /* Preview Icon magnifying glass gets thrown off */
       &:is(.btn-lg) {
         width: 3.25rem;
         aspect-ratio: 1.25 / 1;
@@ -791,13 +805,17 @@ dialog[open] {
         top: 0;
         left: 50%;
         transform: translate(-50%, -200%);
+        inline-size: max-content;
         opacity: 0;
+        visibility: hidden;
         pointer-events: none;
+        cursor: default;
         transition: opacity var(--default-trans-dur);
       }
 
       &:is(:hover, :focus-visible)::before {
         opacity: 1;
+        visibility: visible;
       }
 
       & img.img-cover {
@@ -814,7 +832,7 @@ dialog[open] {
       padding: 0.25em 0.5em;
     }
 
-    & [aria-label="Close button"] {
+    & [aria-label*="Close"] {
       background-color: red;
       border-radius: 50%;
       aspect-ratio: 1;

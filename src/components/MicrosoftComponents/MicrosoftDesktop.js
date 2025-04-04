@@ -1,20 +1,36 @@
-import { useEffect, useRef } from "react";
+// import { useEffect, useRef } from "react";
+import MicrosoftButtonApplication from "./MicrosoftButtonApplication";
 
-export default function MicrosoftDesktop() {
-  const dialogCalRef = useRef();
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://assets.calendly.com/assets/external/widget.js";
-    script.async = true;
-    document.body.appendChild(script);
+export default function MicrosoftDesktop({ appIcons }) {
+  // const dialogCalRef = useRef();
+  // useEffect(() => {
+  //   const script = document.createElement("script");
+  //   script.src = "https://assets.calendly.com/assets/external/widget.js";
+  //   script.async = true;
+  //   document.body.appendChild(script);
 
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
+  //   return () => {
+  //     document.body.removeChild(script);
+  //   };
+  // }, []);
 
   return (
     <div class="microsoft-desktop">
+      {appIcons.map(
+        (icon) =>
+          !icon.isAppleOnly && (
+            <MicrosoftButtonApplication
+              classes={icon.classes}
+              dataName={icon.name}
+              imgSrc={icon.imgSrc}
+              imgClasses={icon.imgClasses}
+              handleClick={icon.handleClick}
+              disabled={icon.disabled ? icon.disabled : false}
+            />
+          )
+      )}
+
+      {/*
       <button className="folder wind-desktop-btn">
         <div className="wind-desktop-icon">
           <img
@@ -72,12 +88,12 @@ export default function MicrosoftDesktop() {
         <div className="wind-desktop-icon">
           <img
             src="/assets/images/image-icons/img-windows_envelope.png"
-            alt="pdf-icon"
+            alt=""
           />
         </div>
         <p className="small">Contact</p>
-      </button>
-      <dialog ref={dialogCalRef} className="dialog-cal">
+      </button> */}
+      {/* <dialog ref={dialogCalRef} className="dialog-cal">
         <div
           className="calendly-inline-widget"
           data-url="https://calendly.com/edicodesigner/freeconsultation?hide_event_type_details=1&background_color=000&text_color=ffffff&primary_color=a588ca"
@@ -96,7 +112,7 @@ export default function MicrosoftDesktop() {
           src="https://assets.calendly.com/assets/external/widget.js"
           async
         ></script>
-      </dialog>
+      </dialog> */}
     </div>
   );
 }
