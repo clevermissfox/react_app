@@ -12,7 +12,7 @@ export default function AppleButtonApplication({
       data-name={dataName}
       aria-label={dataName}
       disabled={disabled}
-      onClick={handleClick ? () => handleClick() : undefined}
+      onClick={handleClick || undefined}
     >
       <img
         className={imgClasses ? imgClasses : undefined}

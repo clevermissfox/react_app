@@ -1,37 +1,54 @@
 import { useContext, useRef, useEffect, useState } from "react";
 import ThemeContext from "../context/ThemeContext";
+import { useDialog } from "../context/DialogContext";
 
-export default function Dialog({ children, isDialogOpen, onDialogClose }) {
+export default function Dialog({ id, classes = "", children }) {
   const { theme } = useContext(ThemeContext);
-  const [isDialogMaximized, setIsDialogMaximized] = useState(false);
-  const [isDialogMinimized, setIsDialogMinimized] = useState(false);
   const dialogRef = useRef(null);
-
-  function toggleDialogMaximized() {
-    setIsDialogMaximized((prevValue) => !prevValue);
-    setIsDialogMinimized(false);
-  }
-
-  function minimizeDialog() {
-    setIsDialogMaximized(false);
-    setIsDialogMinimized(true);
-  }
+  const {
+    dialogs,
+    registerDialog,
+    closeDialog,
+    minimizeDialog,
+    maximizeDialog,
+  } = useDialog();
 
   useEffect(() => {
-    if (isDialogOpen) {
+    registerDialog(id);
+  }, [id, registerDialog]);
+
+  // Get dialog state from context
+  const {
+    isOpen = false,
+    isMinimized = false,
+    isMaximized = false,
+  } = dialogs[id] || {};
+
+  // Open/close dialog based on context state
+  useEffect(() => {
+    if (isOpen && !dialogRef.current?.open) {
       dialogRef.current?.show();
-    } else {
+    } else if (!isOpen && dialogRef.current?.open) {
       dialogRef.current?.close();
-      setIsDialogMinimized(false);
     }
-  }, [isDialogOpen]);
+  }, [isOpen]);
+
+  // function toggleDialogMaximized() {
+  //   setIsDialogMaximized((prevValue) => !prevValue);
+  //   setIsDialogMinimized(false);
+  // }
+
+  // function minimizeDialog() {
+  //   setIsDialogMaximized(false);
+  //   setIsDialogMinimized(true);
+  // }
 
   return (
     <dialog
       ref={dialogRef}
-      className={`${isDialogMaximized ? "maximized" : ""}${
-        isDialogMinimized ? "minimized" : ""
-      }`}
+      className={`${isMaximized ? "maximized" : ""} ${
+        isMinimized ? "minimized" : ""
+      } ${classes}`}
     >
       <div
         className={`utility-bar row ${
@@ -44,7 +61,7 @@ export default function Dialog({ children, isDialogOpen, onDialogClose }) {
               className="grid pi-cen"
               data-btn-close-dialog
               aria-label="Close dialog"
-              onClick={onDialogClose}
+              onClick={() => closeDialog(id)}
             >
               <i className="fa fa-xmark" aria-hidden="true"></i>
             </button>
@@ -52,7 +69,7 @@ export default function Dialog({ children, isDialogOpen, onDialogClose }) {
               className="grid pi-cen"
               data-btn-minimize-dialog
               aria-label="Minimize dialog"
-              onClick={minimizeDialog}
+              onClick={() => minimizeDialog(id)}
             >
               <i className="fa fa-minus" aria-hidden="true"></i>
             </button>
@@ -60,7 +77,7 @@ export default function Dialog({ children, isDialogOpen, onDialogClose }) {
               className="grid pi-cen"
               data-btn-maximize-dialog
               aria-label="Maximize dialog"
-              onClick={toggleDialogMaximized}
+              onClick={() => maximizeDialog(id)}
             >
               <i className="fas fa-plus" aria-hidden="true"></i>
             </button>
@@ -72,7 +89,7 @@ export default function Dialog({ children, isDialogOpen, onDialogClose }) {
               className="grid pi-cen"
               data-btn-minimize-dialog
               aria-label="Minimize dialog"
-              onClick={minimizeDialog}
+              onClick={() => minimizeDialog(id)}
             >
               <i className="fa fa-minus" aria-hidden="true"></i>
             </button>
@@ -80,7 +97,7 @@ export default function Dialog({ children, isDialogOpen, onDialogClose }) {
               className="grid pi-cen"
               data-btn-maximize-dialog
               aria-label="Maximize dialog"
-              onClick={toggleDialogMaximized}
+              onClick={() => maximizeDialog(id)}
             >
               <i className="far fa-square" aria-hidden="true"></i>
             </button>
@@ -88,14 +105,14 @@ export default function Dialog({ children, isDialogOpen, onDialogClose }) {
               className="grid pi-cen"
               data-btn-close-dialog
               aria-label="Close dialog"
-              onClick={onDialogClose}
+              onClick={() => closeDialog(id)}
             >
               <i className="fa fa-xmark" aria-hidden="true"></i>
             </button>
           </>
         )}
       </div>
-      {children}
+      <div className="dialog-content">{children}</div>
     </dialog>
   );
 }

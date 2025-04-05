@@ -66,20 +66,21 @@
   /* NUMERIC VALUES */
   --padding-default: 1.5em;
   --br-default: 0.25em;
+  --max-wrapper-width: 60ch;
   --default-trans-dur: 400ms;
   --theme-transition-dur: calc(var(--default-trans-dur) * 2);
   --timing-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
   --nav-bar-height: 2rem;
-  --did-i-break-it: 0;
+  --apple-task-bar-height: ;
   interpolate-size: allow-keywords;
 }
 
 html[data-theme="apple"] {
-  --clr-bg-body: url("/public/assets/images/wallpapers/img-apple_desktop-wallpaper-opacity.jpg");
+  --clr-bg-body-image: url("/public/assets/images/wallpapers/img-apple_desktop-wallpaper-opacity.jpg");
 }
 
 html[data-theme="microsoft"] {
-  --clr-bg-body: url("/public/assets/images/wallpapers/img-windows_desktop-wallpaper_2.webp");
+  --clr-bg-body-image: url("/public/assets/images/wallpapers/img-windows_desktop-wallpaper_2.webp");
 }
 
 /* @media (prefers-color-scheme: dark) {
@@ -353,6 +354,220 @@ button {
   gap: 0.25em;
 }
 
+/* SPACING UTILITIES */
+.gap-4 {
+  gap: 4em;
+}
+
+.gap-3 {
+  gap: 3em;
+}
+
+.gap-2 {
+  gap: 2em;
+}
+
+.gap-1 {
+  gap: 1em;
+}
+
+.gap-half {
+  gap: 0.5em;
+}
+
+.gap-quarter {
+  gap: 0.25em;
+}
+
+.padding-2 {
+  padding: 2em;
+}
+
+.padding-b-2 {
+  padding-block: 2em;
+}
+
+.padding-i-2 {
+  padding-inline: 2em;
+}
+
+.padding-1 {
+  padding: 1em;
+}
+
+.padding-b-1 {
+  padding-block: 1em;
+}
+
+.padding-i-1 {
+  padding-inline: 1em;
+}
+
+.padding-half {
+  padding: 0.5em;
+}
+
+.padding-b-half {
+  padding-block: 0.5em;
+}
+
+.padding-i-half {
+  padding-inline: 0.5em;
+}
+
+/* 2em */
+.margin-2 {
+  margin: 2em;
+}
+
+.margin-b-2 {
+  margin-block: 2em;
+}
+
+.margin-bs-2 {
+  margin-block-start: 2em;
+}
+
+.margin-be-2 {
+  margin-block-end: 2em;
+}
+
+.margin-i-2 {
+  margin-inline: 2em;
+}
+
+.margin-is-2 {
+  margin-inline-start: 2em;
+}
+
+.margin-ie-2 {
+  margin-inline-end: 2em;
+}
+
+/* 1em */
+.margin-1 {
+  margin: 1em;
+}
+
+.margin-b-1 {
+  margin-block: 1em;
+}
+
+.margin-bs-1 {
+  margin-block-start: 1em;
+}
+
+.margin-be-1 {
+  margin-block-end: 1em;
+}
+
+.margin-i-1 {
+  margin-inline: 1em;
+}
+
+.margin-is-1 {
+  margin-inline-start: 1em;
+}
+
+.margin-ie-1 {
+  margin-inline-end: 1em;
+}
+
+/* 0.5em */
+.margin-half {
+  margin: 0.5em;
+}
+
+.margin-b-half {
+  margin-block: 0.5em;
+}
+
+.margin-bs-half {
+  margin-block-start: 0.5em;
+}
+
+.margin-be-half {
+  margin-block-end: 0.5em;
+}
+
+.margin-i-half {
+  margin-inline: 0.5em;
+}
+
+.margin-is-half {
+  margin-inline-start: 0.5em;
+}
+
+.margin-ie-half {
+  margin-inline-end: 0.5em;
+}
+
+/* 0.25em */
+.margin-quarter {
+  margin: 0.25em;
+}
+
+.margin-b-quarter {
+  margin-block: 0.25em;
+}
+
+.margin-bs-quarter {
+  margin-block-start: 0.25em;
+}
+
+.margin-be-quarter {
+  margin-block-end: 0.25em;
+}
+
+.margin-i-quarter {
+  margin-inline: 0.25em;
+}
+
+.margin-is-quarter {
+  margin-inline-start: 0.25em;
+}
+
+.margin-ie-quarter {
+  margin-inline-end: 0.25em;
+}
+
+/* auto */
+.margin-auto {
+  margin: auto;
+}
+.margin-i-auto {
+  margin-inline: auto;
+}
+.margin-is-auto {
+  margin-inline-start: auto;
+}
+.margin-ie-auto {
+  margin-inline-end: auto;
+}
+.margin-b-auto {
+  margin-block: auto;
+}
+.margin-bs-auto {
+  margin-block-start: auto;
+}
+.margin-be-auto {
+  margin-block-end: auto;
+}
+
+/* OTHER UTILITIES */
+
+.desat {
+  opacity: 0.7;
+}
+
+.ls-1 {
+  letter-spacing: 1px;
+}
+
+.ta-cen {
+  text-align: center;
+}
+
 /* ELEMENT SELECTORS */
 
 body {
@@ -363,7 +578,7 @@ body {
   color: var(--clr-primary);
   text-wrap: pretty;
   margin: 0;
-  background: var(--clr-neutral-900);
+  background-color: var(--clr-bg-body);
 
   /* display: flex;
   justify-content: center;
@@ -374,7 +589,8 @@ body {
     content: "";
     position: fixed;
     inset: 0;
-    background: var(--clr-bg-body) center center/cover fixed;
+    background: var(--clr-bg-body-image) center center/cover fixed
+      var(--clr-bg-body);
     z-index: -5;
     transition: background var(--theme-transition-dur) allow-discrete;
   }
@@ -628,8 +844,9 @@ ul.date:is(.col) {
 .main {
   padding-block: 3em;
   padding-inline: 1em;
-  block-size: 100vh;
-  block-size: 100svh;
+  block-size: calc(100vh - var(--nav-bar-height));
+  block-size: calc(100dvh - var(--nav-bar-height));
+  overflow: auto;
 }
 
 /* FILEEXPLORER Component */
@@ -654,7 +871,7 @@ dialog[open] {
   inset-block: var(--_pos-block);
   border: none;
   border-radius: var(--br-default);
-  overflow-y: auto;
+  overflow: hidden;
   transition: all var(--default-trans-dur);
 
   &::-webkit-scrollbar {
@@ -662,7 +879,7 @@ dialog[open] {
   }
 
   &:is(.maximized) {
-    width: calc(100vw - 8px);
+    width: calc(100vw - 0px);
     height: 100vh;
     height: 100dvh;
     inset-inline: 0;
@@ -685,8 +902,22 @@ dialog[open] {
   }
 
   & .utility-bar {
-    position: sticky;
+    /* position: sticky; */
     top: 0;
+    z-index: 5;
+  }
+
+  & .dialog-content {
+    overflow-y: auto;
+    height: 100%;
+
+    :not(.minimized &)&:has(.portfolio-grid-wrapper) {
+      padding: var(--padding-default);
+    }
+
+    &:has(.resume-wrapper) {
+      background-color: var(--clr-bg-body);
+    }
   }
   & iframe {
     display: block;
@@ -694,44 +925,146 @@ dialog[open] {
 }
 
 .dialog-cal[open] {
-  overflow: auto;
   margin: auto;
   max-width: fit-content;
-  max-height: 100vh;
-  max-height: 100dvh;
+  max-height: min(600px, 100vh - var(--nav-bar-height));
+  max-height: min(600px, 100dvh - var(--nav-bar-height));
   height: min(600px, 100vh - var(--nav-bar-height));
   height: min(600px, 100dvh - var(--nav-bar-height));
   scrollbar-gutter: stable;
-  .calendly-inline-widget {
-    position: relative;
-    & [btn-close] {
-      padding-block-start: 0.125em;
-      padding-inline-end: 0.5em;
-      position: static;
-      float: right;
-      top: 0;
-      left: auto;
-      right: 0;
-      color: var(--clr-neutral-900);
-    }
+
+  & [btn-close] {
+    padding: 0.5em;
+    border-radius: 2em;
+    background-color: oklch(0% 0 0 / 20%);
+    top: 0;
+    left: auto;
+    right: 0;
+    transform: translateY(-100%);
+    color: var(--clr-neutral-100);
   }
 }
 
 /* PORTFOLIO GRID */
 .portfolio-grid-wrapper {
   background-color: var(--clr-neutral-100);
-  height: 75vh;
+  /* height: 75vh; */
   width: min(100%, 100ch);
   margin-inline: auto;
-  padding: var(--padding-default);
-  border-radius: var(--br-default);
-  overflow: auto;
+  /* padding: var(--padding-default); */
+  /* border-radius: var(--br-default); */
+  /* overflow: auto; */
 }
 
 .portfolio-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 30ch), 1fr));
   gap: 1em;
+}
+
+/* RESUME GRID */
+.resume-wrapper {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 1em;
+
+  & * {
+    --delay: 0ms;
+    opacity: 0;
+    scale: 0.9;
+    transform-origin: center;
+    animation: fade-in 800ms var(--delay) ease-in forwards;
+  }
+
+  @starting-style {
+    opacity: 0;
+    scale: 0.9;
+  }
+}
+
+& .wrapper {
+  width: min(
+    100% - var(--padding-default),
+    var(--max-wrapper-width) - var(--padding-default)
+  );
+  margin-inline: auto;
+}
+
+& :is(ul[role="tablist"], .logo-list) {
+  list-style: "";
+}
+
+& nav li[role="presentation"] {
+  display: contents;
+}
+
+& nav [role="tab"] {
+  --clr-tab-surface: var(--clr-accent);
+  padding: 0.5em 1.2em;
+  border-radius: var(--br-default);
+  background-color: var(--clr-tab-surface);
+  flex-grow: 1;
+}
+
+& nav [role="tab"]:is([aria-selected="true"]) {
+  --clr-tab-surface: var(--clr-neutral-100);
+  color: var(--clr-accent);
+}
+
+& [role="tabpanel"] {
+  display: grid;
+  gap: 1em;
+  @media (width > 500px) {
+    grid-template-columns: 1.5fr 1fr;
+  }
+}
+
+& .content-column h2 {
+  --delay: 400ms;
+
+  & + p {
+    --delay: 600ms;
+  }
+}
+
+& .logo-list {
+  --delay: 1000ms;
+  display: grid;
+  gap: 1em;
+  grid-template-columns: repeat(auto-fit, var(--logo-size, 64px));
+  place-items: center;
+  place-content: center;
+}
+
+& .logo-item {
+  display: contents;
+}
+
+& .logo-item button {
+  position: relative;
+  filter: grayscale(60%);
+  transition: filter var(--default-trans-dur),
+    grid-column var(--default-trans-dur);
+
+  &:is(:hover, :focus-visible, [aria-selected="true"]) {
+    filter: grayscale(0%);
+  }
+
+  &:is([aria-selected="true"]) {
+    grid-column: 1 / -1;
+    order: -1;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    scale: 0.9;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
 }
 
 /* MARK: Apple Specific Styles */
@@ -846,6 +1179,7 @@ dialog[open] {
 
     &:is(.maximized) {
       --_pos-block: 0 0;
+      z-index: 10;
     }
 
     &:is(.minimized) [data-btn-minimize-dialog] {

@@ -1,19 +1,22 @@
-import { useContext, useState, useEffect, useCallback, useRef } from "react";
-import { useNavBarHeight } from "../hooks/useNavBarHeight";
+import { useContext, useState, useEffect, useCallback } from "react";
 import ThemeContext from "../context/ThemeContext";
+import { useDialog } from "../context/DialogContext";
+import { useNavBarHeight } from "../hooks/useNavBarHeight";
+
 import { supabase } from "../config/supabase-config";
+
 import AppleTaskbar from "./AppleComponents/AppleTaskbar";
 import Dialog from "./Dialog";
 import MicrosoftDesktop from "./MicrosoftComponents/MicrosoftDesktop";
 import ApplicationData from "./ApplicationData";
+import ResumeWrapper from "./ResumeWrapper";
 
 export default function Main() {
   const { theme } = useContext(ThemeContext);
   const [portfolioData, setPortfolioData] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const dialogCalRef = useRef();
+  // const [isLoading, setIsLoading] = useState(false);
+  const { dialogs, openDialog } = useDialog();
 
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [currentIframeUrl, setCurrentIframeUrl] = useState(null);
   const [error, setError] = useState(null);
 
@@ -31,8 +34,9 @@ export default function Main() {
     };
   }, []);
 
-  const fetchData = useCallback(async () => {
-    setIsLoading(true);
+  // get the portfolio data from supabase
+  const fetchPortfolioData = useCallback(async () => {
+    // setIsLoading(true);
     setError(null);
     try {
       const { data, error } = await supabase
@@ -47,62 +51,60 @@ export default function Main() {
       console.error("Error fetching data:", error.message);
       setError(error.message);
     } finally {
-      setIsLoading(false);
+      openDialog("portfolio");
+      console.log("portfolio fetch function at finally");
     }
   }, []);
 
+  // Handle portfolio item click to open dialog and load iframe URL
   function handlePortfolioItemClick(url) {
-    setCurrentIframeUrl(url);
-    openDialog();
+    setCurrentIframeUrl(url); // Set iframe URL dynamically
+    if (dialogs["portfolio-item"]) {
+      openDialog("portfolio-item"); // Open portfolio dialog via context
+    }
   }
 
-  function openDialog() {
-    setIsDialogOpen(true);
-  }
+  const isPortfolioDialogOpen = dialogs["portfolio-item"]?.isOpen || false;
 
-  function closeDialog() {
-    setIsDialogOpen(false);
-    setCurrentIframeUrl(null);
-  }
+  useEffect(() => {
+    if (!isPortfolioDialogOpen) {
+      setCurrentIframeUrl(null); // Reset iframe URL when portfolio dialog closes
+    }
+  }, [isPortfolioDialogOpen]); // Simplified dependency array
 
-  const appIcons = ApplicationData({ theme, fetchData, dialogCalRef });
+  const appIcons = ApplicationData({ theme, fetchPortfolioData });
 
   return (
     <>
       <main className="main">
-        {theme === "apple" && <AppleTaskbar appIcons={appIcons} />}
         {theme === "microsoft" && (
           <>
             <MicrosoftDesktop appIcons={appIcons} />
           </>
         )}
-        {/* <button onClick={fetchData} disabled={isLoading || portfolioData}>
-        {isLoading
-          ? "Loading..."
-          : portfolioData
-          ? "Portfolio Data has been fetched"
-          : "Fetch Portfolio Items"}
-      </button> */}
-        {error && <p className="error">Error: {error}</p>}
         {portfolioData && (
-          <div className="portfolio-grid-wrapper">
-            <div className="portfolio-grid">
-              {portfolioData.map((data) => (
-                <button
-                  onClick={() => handlePortfolioItemClick(data.url)}
-                  data-id={data.id}
-                  key={data.id}
-                  className="portfolio-img-wrapper"
-                >
-                  <h2 className="visually-hidden">{data.name}</h2>
-                  <img src={data.imgUrl} alt={data.name} />
-                </button>
-              ))}
+          <Dialog id="portfolio">
+            {error && <p className="error">Error: {error}</p>}
+            <div className="portfolio-grid-wrapper">
+              <div className="portfolio-grid">
+                {portfolioData.map((data) => (
+                  <button
+                    onClick={() => handlePortfolioItemClick(data.url)}
+                    data-id={data.id}
+                    key={data.id}
+                    className="portfolio-img-wrapper"
+                  >
+                    <h2 className="visually-hidden">{data.name}</h2>
+                    <img src={data.imgUrl} alt={data.name} />
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
+          </Dialog>
         )}
-        <Dialog isDialogOpen={isDialogOpen} onDialogClose={closeDialog}>
-          {currentIframeUrl && (
+
+        {currentIframeUrl && (
+          <Dialog id="portfolio-item">
             <iframe
               src={currentIframeUrl}
               title="Portfolio Item"
@@ -110,24 +112,22 @@ export default function Main() {
               width="100%"
               frameBorder="0"
             ></iframe>
-          )}
-        </Dialog>
-        <dialog ref={dialogCalRef} className="dialog-cal">
+          </Dialog>
+        )}
+        <Dialog id="calendar" classes="dialog-cal">
           <div
             className="calendly-inline-widget"
             data-url="https://calendly.com/edicodesigner/freeconsultation?hide_event_type_details=1&background_color=000&text_color=ffffff&primary_color=a588ca"
             style={{ minWidth: "320px", height: "100%" }}
-          >
-            <button
-              btn-close=""
-              onClick={() => dialogCalRef.current?.close()}
-              aria-label="Close Calendar"
-            >
-              <i className="fa fa-xmark" aria-hidden="true"></i>
-            </button>
-          </div>
-        </dialog>
+          ></div>
+        </Dialog>
+        <Dialog id="resume">
+          <ResumeWrapper />
+        </Dialog>
       </main>
+      <footer>
+        {theme === "apple" && <AppleTaskbar appIcons={appIcons} />}
+      </footer>
       <script
         type="text/javascript"
         src="https://assets.calendly.com/assets/external/widget.js"

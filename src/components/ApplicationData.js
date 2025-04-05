@@ -1,4 +1,7 @@
+import { useDialog } from "../context/DialogContext";
+
 export default function ApplicationData({ theme, ...props }) {
+  const { openDialog } = useDialog();
   return [
     {
       name: "Finder",
@@ -10,16 +13,16 @@ export default function ApplicationData({ theme, ...props }) {
       disabled: false,
       isAppleOnly: true,
     },
-    {
-      name: "Preview",
-      classes: "btn-lg",
-      imgSrc:
-        "/assets/icons/apple/application-icons/icon-apple_preview-logo.png",
-      imgClasses: null,
-      handleClick: null,
-      disabled: false,
-      isAppleOnly: true,
-    },
+    // {
+    //   name: "Preview",
+    //   classes: "btn-lg",
+    //   imgSrc:
+    //     "/assets/icons/apple/application-icons/icon-apple_preview-logo.png",
+    //   imgClasses: null,
+    //   handleClick: null,
+    //   disabled: false,
+    //   isAppleOnly: true,
+    // },
     {
       name: theme === "apple" ? "Safari" : "Chrome",
       classes: theme === "apple" ? "btn-bg" : "browse",
@@ -39,7 +42,10 @@ export default function ApplicationData({ theme, ...props }) {
           ? "/assets/icons/apple/application-icons/icon-apple_photos-logo.webp"
           : "/assets/images/image-icons/img-windows_gallery.png",
       imgClasses: null,
-      handleClick: props.fetchData,
+      handleClick: () => {
+        props.fetchPortfolioData(); // Fetch portfolio data
+        openDialog("portfolio"); // Open portfolio dialog
+      },
       disabled: false,
     },
     {
@@ -50,7 +56,7 @@ export default function ApplicationData({ theme, ...props }) {
           ? "/assets/icons/apple/application-icons/icon-apple_acrobat-logo.svg"
           : "/assets/images/image-icons/img-windows_pdf.png",
       imgClasses: null,
-      handleClick: null,
+      handleClick: () => openDialog("resume"),
       disabled: false,
     },
     {
@@ -61,7 +67,7 @@ export default function ApplicationData({ theme, ...props }) {
           ? "/assets/icons/apple/application-icons/icon-apple_calendar-logo.svg"
           : "/assets/images/image-icons/img-windows_calendar.png",
       imgClasses: theme === "apple" ? "img-cover" : "",
-      handleClick: () => props.dialogCalRef.current?.show(),
+      handleClick: () => openDialog("calendar"),
       disabled: false,
     },
     {

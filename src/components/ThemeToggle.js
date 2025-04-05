@@ -9,6 +9,7 @@ const ThemeToggle = () => {
       <label>
         <input
           type="checkbox"
+          id="checkbox-theme_toggle"
           className="visually-hidden"
           checked={theme === "apple"} // Check if the current theme is 'apple'
           onChange={toggleTheme} // Toggle the theme on change

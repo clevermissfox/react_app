@@ -1,25 +1,13 @@
-// import { useEffect, useRef } from "react";
 import MicrosoftButtonApplication from "./MicrosoftButtonApplication";
 
 export default function MicrosoftDesktop({ appIcons }) {
-  // const dialogCalRef = useRef();
-  // useEffect(() => {
-  //   const script = document.createElement("script");
-  //   script.src = "https://assets.calendly.com/assets/external/widget.js";
-  //   script.async = true;
-  //   document.body.appendChild(script);
-
-  //   return () => {
-  //     document.body.removeChild(script);
-  //   };
-  // }, []);
-
   return (
-    <div class="microsoft-desktop">
+    <div className="microsoft-desktop">
       {appIcons.map(
         (icon) =>
           !icon.isAppleOnly && (
             <MicrosoftButtonApplication
+              key={icon.name}
               classes={icon.classes}
               dataName={icon.name}
               imgSrc={icon.imgSrc}
