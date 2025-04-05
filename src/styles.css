@@ -889,6 +889,7 @@ dialog[open] {
   &:is(.minimized) {
     width: revert;
     height: revert;
+    border: 0.8px solid;
 
     > *:not(.utility-bar) {
       height: 0;

@@ -22,6 +22,7 @@ export default function Dialog({ id, classes = "", children }) {
     isOpen = false,
     isMinimized = false,
     isMaximized = false,
+    zIndex = 0,
   } = dialogs[id] || {};
 
   // Open/close dialog based on context state
@@ -32,16 +33,6 @@ export default function Dialog({ id, classes = "", children }) {
       dialogRef.current?.close();
     }
   }, [isOpen]);
-
-  // function toggleDialogMaximized() {
-  //   setIsDialogMaximized((prevValue) => !prevValue);
-  //   setIsDialogMinimized(false);
-  // }
-
-  // function minimizeDialog() {
-  //   setIsDialogMaximized(false);
-  //   setIsDialogMinimized(true);
-  // }
 
   return (
     <dialog

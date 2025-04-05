@@ -5,6 +5,7 @@ const DialogContext = createContext();
 export const DialogProvider = ({ children }) => {
   const [dialogs, setDialogs] = useState({});
   const dialogRefs = useRef({});
+  const [zIndexCounter, setZIndexCounter] = useState(15);
 
   const registerDialog = (id) => {
     setDialogs((prev) => {
@@ -17,16 +18,21 @@ export const DialogProvider = ({ children }) => {
           isOpen: false,
           isMinimized: false,
           isMaximized: false,
+          zIndex: 0,
         },
       };
     });
   };
 
   const openDialog = (id) => {
-    setDialogs((prev) => ({
-      ...prev,
-      [id]: { ...prev[id], isOpen: true },
-    }));
+    setDialogs((prev) => {
+      const newZIndex = zIndexCounter + 1; // Increment z-index
+      setZIndexCounter(newZIndex); // Update the counter
+      return {
+        ...prev,
+        [id]: { ...prev[id], isOpen: true, zIndex: newZIndex },
+      };
+    });
   };
 
   const closeDialog = (id) => {

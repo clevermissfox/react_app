@@ -52,7 +52,6 @@ export default function Main() {
       setError(error.message);
     } finally {
       openDialog("portfolio");
-      console.log("portfolio fetch function at finally");
     }
   }, []);
 
