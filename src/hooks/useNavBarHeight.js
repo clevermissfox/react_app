@@ -8,12 +8,20 @@ export function useNavBarHeight() {
   useEffect(() => {
     const updateNavBarHeight = () => {
       const navBar = document.querySelector(".nav-bar");
+      const taskBar = document.querySelector("footer:has(.taskbar)");
       if (navBar) {
         const height = navBar.offsetHeight;
         setNavBarHeight(height);
         document.documentElement.style.setProperty(
           "--nav-bar-height",
           `${height}px`
+        );
+      }
+      if (taskBar) {
+        const top = taskBar.offsetTop;
+        document.documentElement.style.setProperty(
+          "--apple-task-bar-offset",
+          `${top}px`
         );
       }
     };

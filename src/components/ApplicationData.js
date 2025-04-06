@@ -44,7 +44,6 @@ export default function ApplicationData({ theme, ...props }) {
       imgClasses: null,
       handleClick: () => {
         props.fetchPortfolioData(); // Fetch portfolio data
-        openDialog("portfolio"); // Open portfolio dialog
       },
       disabled: false,
     },

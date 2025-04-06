@@ -71,7 +71,7 @@
   --theme-transition-dur: calc(var(--default-trans-dur) * 2);
   --timing-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
   --nav-bar-height: 2rem;
-  --apple-task-bar-height: ;
+  --apple-task-bar-offset: 2rem;
   interpolate-size: allow-keywords;
 }
 
@@ -753,6 +753,10 @@ h3 {
   }
 }
 
+/* main:has(.maximixed[open]) .theme-toggle {
+  z-index: 5;
+} */
+
 /* NAVBAR Component */
 
 .nav-bar {
@@ -859,14 +863,15 @@ ul.date:is(.col) {
 
 /* DIALOG Component */
 dialog[open] {
-  color: inherit;
   --_pos-block: auto auto;
+  --dialog-base-z-index: auto;
+  --dialog-dynamic-z-index: var(--dialog-base-z-index);
+  z-index: var(--dialog-dynamic-z-index);
+  color: inherit;
   margin-inline: auto;
   max-width: 100vw;
-  max-height: 100vh;
-  max-height: 100dvh;
-  height: calc(100vh - var(--nav-bar-height));
-  height: calc(100dvh - var(--nav-bar-height));
+  max-height: calc(100vh - var(--nav-bar-height));
+  max-height: calc(100dvh - var(--nav-bar-height));
   width: min(100% - 2rem, 100ch);
   inset-block: var(--_pos-block);
   border: none;
@@ -879,11 +884,11 @@ dialog[open] {
   }
 
   &:is(.maximized) {
-    width: calc(100vw - 0px);
+    --_pos-block: 0 0;
+    --dialog-dynamic-z-index: 1000;
+    width: 100vw;
     height: 100vh;
     height: 100dvh;
-    inset-inline: 0;
-    inset-block: 0;
   }
 
   &:is(.minimized) {
@@ -1091,12 +1096,21 @@ dialog[open] {
     padding-block-end: 0.5em;
   }
 
-  /* MARK: TASKBAR Component in APPLE Theme */
-  .taskbar {
+  /* TASKBAR Component in APPLE Theme */
+  footer:has(.taskbar) {
     position: fixed;
+    left: 0;
+    right: 0;
     bottom: 1rem;
-    left: 50%;
-    transform: translateX(-50%);
+    padding-inline: 1rem;
+    overflow-x: auto;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  .taskbar {
+    position: relative;
     border-radius: 1em;
     background-color: oklch(0% 0 0 / 40%);
     backdrop-filter: blur(0.5em);
@@ -1104,7 +1118,6 @@ dialog[open] {
     padding: 0.5em;
     width: max-content;
     margin-inline: auto;
-
     align-items: center;
 
     & > button {
@@ -1176,11 +1189,17 @@ dialog[open] {
 
   /* DIALOG Component in APPLE Theme */
   dialog[open] {
-    --_pos-block: var(--nav-bar-height) 0;
+    --_pos-block: var(--nav-bar-height) var(--apple-task-bar-offset);
+
+    &:not(.maximized) {
+      max-height: calc(
+        100vh - var(--nav-bar-height) - (100vh - var(--apple-task-bar-offset)) -
+          0.5em
+      );
+    }
 
     &:is(.maximized) {
       --_pos-block: 0 0;
-      z-index: 10;
     }
 
     &:is(.minimized) [data-btn-minimize-dialog] {
@@ -1228,7 +1247,7 @@ dialog[open] {
   }
 }
 
-/* MARK Microsoft Specific Styles */
+/* MARK: Microsoft Specific Styles */
 [data-theme="microsoft"] {
   /* NAVBAR Component in MICROSOFT Theme */
   .nav-bar {
@@ -1284,7 +1303,7 @@ dialog[open] {
     }
   }
 
-  /* MARK: POTFOLIO DIALOG Component in MICROSOFT Theme */
+  /* DIALOG Component in MICROSOFT Theme */
   dialog:is([open]) {
     --_pos-block: 0 var(--nav-bar-height);
 

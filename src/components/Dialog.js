@@ -2,7 +2,7 @@ import { useContext, useRef, useEffect, useState } from "react";
 import ThemeContext from "../context/ThemeContext";
 import { useDialog } from "../context/DialogContext";
 
-export default function Dialog({ id, classes = "", children }) {
+export default function Dialog({ id, classes, children }) {
   const { theme } = useContext(ThemeContext);
   const dialogRef = useRef(null);
   const {
@@ -22,8 +22,14 @@ export default function Dialog({ id, classes = "", children }) {
     isOpen = false,
     isMinimized = false,
     isMaximized = false,
-    zIndex = 0,
+    zIndex,
   } = dialogs[id] || {};
+
+  useEffect(() => {
+    if (dialogRef.current) {
+      dialogRef.current.style.setProperty("--dialog-dynamic-z-index", zIndex);
+    }
+  }, [zIndex, isOpen]);
 
   // Open/close dialog based on context state
   useEffect(() => {
@@ -37,9 +43,15 @@ export default function Dialog({ id, classes = "", children }) {
   return (
     <dialog
       ref={dialogRef}
-      className={`${isMaximized ? "maximized" : ""} ${
-        isMinimized ? "minimized" : ""
-      } ${classes}`}
+      className={
+        [
+          classes,
+          isOpen && isMaximized ? "maximized" : "",
+          isOpen && isMinimized ? "minimized" : "",
+        ]
+          .filter(Boolean)
+          .join(" ") || undefined
+      }
     >
       <div
         className={`utility-bar row ${

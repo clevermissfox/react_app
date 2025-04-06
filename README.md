@@ -8,6 +8,7 @@ This project was created with React, Firebase, and Supabase; Its still in progre
 - 'Email' client for contact form
 - For mobile screen sizes, toggle between Android oS and iOS
 - Ability to open multiple file explorers at the same time ✅
+- Address the theme toggle zindex when Dialogs are open vs maximized
 - Drag the dialogs? Ensure the most recently opened has the highest zindex; when they are minimized they shouldnt go on top of each other; address the hieght styling: on apple, if natural size (not maximized) it should be between the navbar and the taskbar, on microsoft, should be above the taskbar.
 
 ## Disclaimer: This will not have all the functionality as a desktop computer; It is just a fun interface and hopefully an interesting UX but is an emulation not an exact replica

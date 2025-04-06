@@ -4,8 +4,6 @@ const DialogContext = createContext();
 
 export const DialogProvider = ({ children }) => {
   const [dialogs, setDialogs] = useState({});
-  const dialogRefs = useRef({});
-  const [zIndexCounter, setZIndexCounter] = useState(15);
 
   const registerDialog = (id) => {
     setDialogs((prev) => {
@@ -18,7 +16,7 @@ export const DialogProvider = ({ children }) => {
           isOpen: false,
           isMinimized: false,
           isMaximized: false,
-          zIndex: 0,
+          zIndex: "auto",
         },
       };
     });
@@ -26,8 +24,19 @@ export const DialogProvider = ({ children }) => {
 
   const openDialog = (id) => {
     setDialogs((prev) => {
-      const newZIndex = zIndexCounter + 1; // Increment z-index
-      setZIndexCounter(newZIndex); // Update the counter
+      let highestZIndex = 0;
+      Object.keys(prev).forEach((key) => {
+        const dialog = prev[key];
+        if (
+          dialog.isOpen &&
+          typeof dialog.zIndex === "number" &&
+          dialog.zIndex > highestZIndex
+        ) {
+          highestZIndex = dialog.zIndex;
+        }
+      });
+
+      const newZIndex = highestZIndex + 10;
       return {
         ...prev,
         [id]: { ...prev[id], isOpen: true, zIndex: newZIndex },
@@ -38,7 +47,7 @@ export const DialogProvider = ({ children }) => {
   const closeDialog = (id) => {
     setDialogs((prev) => ({
       ...prev,
-      [id]: { ...prev[id], isOpen: false },
+      [id]: { ...prev[id], isOpen: false, zIndex: "auto" },
     }));
   };
 
@@ -49,15 +58,52 @@ export const DialogProvider = ({ children }) => {
     }));
   };
 
+  // const maximizeDialog = (id) => {
+  //   setDialogs((prev) => ({
+  //     ...prev,
+  //     [id]: {
+  //       ...prev[id],
+  //       isMaximized: !prev[id]?.isMaximized,
+  //       isMinimized: false,
+  //     },
+  //   }));
+  // };
+
   const maximizeDialog = (id) => {
-    setDialogs((prev) => ({
-      ...prev,
-      [id]: {
-        ...prev[id],
-        isMaximized: !prev[id]?.isMaximized,
-        isMinimized: false,
-      },
-    }));
+    setDialogs((prev) => {
+      const dialog = prev[id];
+      const isMaximized = !dialog.isMaximized;
+      let newZIndex = dialog.zIndex;
+
+      if (isMaximized) {
+        // Maximizing: find the highest z-index and set this dialog's z-index 10 higher
+        let highestZIndex = 0;
+        Object.keys(prev).forEach((key) => {
+          const otherDialog = prev[key];
+          if (
+            otherDialog.isOpen &&
+            typeof otherDialog.zIndex === "number" &&
+            otherDialog.zIndex > highestZIndex
+          ) {
+            highestZIndex = otherDialog.zIndex;
+          }
+        });
+        newZIndex = highestZIndex + 10;
+      } else {
+        // Unmaximizing: revert to the previous z-index
+        newZIndex = 10;
+      }
+
+      return {
+        ...prev,
+        [id]: {
+          ...dialog,
+          isMaximized: isMaximized,
+          isMinimized: false,
+          zIndex: newZIndex,
+        },
+      };
+    });
   };
 
   return (

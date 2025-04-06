@@ -81,9 +81,9 @@ export default function Main() {
             <MicrosoftDesktop appIcons={appIcons} />
           </>
         )}
-        {portfolioData && (
-          <Dialog id="portfolio">
-            {error && <p className="error">Error: {error}</p>}
+        <Dialog id="portfolio">
+          {error && <p className="error">Error: {error}</p>}
+          {portfolioData && (
             <div className="portfolio-grid-wrapper">
               <div className="portfolio-grid">
                 {portfolioData.map((data) => (
@@ -99,8 +99,8 @@ export default function Main() {
                 ))}
               </div>
             </div>
-          </Dialog>
-        )}
+          )}
+        </Dialog>
 
         {currentIframeUrl && (
           <Dialog id="portfolio-item">
