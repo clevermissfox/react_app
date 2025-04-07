@@ -20,7 +20,7 @@ export default function ResumeWrapper() {
       setContentHeading(firstItem.name);
       setContentPara(firstItem.description);
     }
-  }, [filteredData]);
+  }, []);
 
   const handleTabClick = (category) => {
     setActiveCat(category);
@@ -46,7 +46,6 @@ export default function ResumeWrapper() {
     setSelectedItem(item.id);
     setContentHeading(item.name);
     setContentPara(item.description);
-    console.log(item);
   };
 
   return (
@@ -71,44 +70,6 @@ export default function ResumeWrapper() {
                 </button>
               </li>
             ))}
-            {/* <li role="presentation">
-              <button
-                id="tab-design"
-                role="tab"
-                aria-controls="panel"
-                aria-selected={activeCat === 'Design'}
-                className="tab"
-                data-category="Design"
-                onClick={updateactiveCat}
-              >
-                Design
-              </button>
-            </li>
-            <li role="presentation">
-              <button
-                id="tab2"
-                role="tab"
-                aria-controls="panel"
-                aria-selected={activeCat === 'Development'}
-                className="tab"
-                data-category="Development"
-                onClick={updateactiveCat}
-              >
-                Development
-              </button>
-            </li>
-            <li role="presentation">
-              <button
-                id="tab3"
-                role="tab"
-                aria-controls="panel"
-                aria-selected={activeCat === 'Tools'}
-                className="tab"
-                onClick={updateactiveCat}
-              >
-                Tools
-              </button>
-            </li> */}
           </ul>
         </nav>
       </header>

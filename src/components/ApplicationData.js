@@ -31,7 +31,7 @@ export default function ApplicationData({ theme, ...props }) {
           ? "/assets/icons/apple/application-icons/icon-apple_safari-logo.svg"
           : "/assets/icons/microsoft/icon-windows_chrome-logo.svg",
       imgClasses: theme === "apple" ? "img-cover" : "",
-      handleClick: null,
+      handleClick: () => openDialog("browser"),
       disabled: false,
     },
     {
@@ -48,7 +48,7 @@ export default function ApplicationData({ theme, ...props }) {
       disabled: false,
     },
     {
-      name: theme === "apple" ? "Adobe Acrobat" : "Resume",
+      name: theme === "apple" ? "Adobe Acrobat" : "Skills",
       classes: theme === "apple" ? "btn-bg" : "resume",
       imgSrc:
         theme === "apple"

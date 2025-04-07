@@ -10,6 +10,7 @@ export default function AppleButtonApplication({
     <button
       className={classes ? classes : undefined}
       data-name={dataName}
+      title={dataName}
       aria-label={dataName}
       disabled={disabled}
       onClick={handleClick || undefined}

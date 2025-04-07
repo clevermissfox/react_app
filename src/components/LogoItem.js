@@ -1,4 +1,4 @@
-export default function LogoItem({ item, isSelected, isFirst, onClick }) {
+export default function LogoItem({ item, isSelected, onClick }) {
   return (
     <li className="logo-item">
       <button

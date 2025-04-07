@@ -689,6 +689,7 @@ h3 {
   --_padding-block: 0.5em;
   --_starting-point: translateX(calc((var(--_icon-size) / 6 - 0.125em) * -1));
   --_ending-point: translateX(calc(var(--_icon-size) * 1.5));
+  --_bottom: calc(var(--nav-bar-height, 3em) + 0.5em);
 
   background: var(--clr-neutral-800);
   border: 2px solid var(--clr-neutral-750);
@@ -699,7 +700,7 @@ h3 {
   transition: all var(--default-trans-dur);
   position: fixed;
   right: 0.5em;
-  bottom: 4em;
+  bottom: var(--_bottom, 4em);
 
   & > label {
     display: grid;
@@ -752,10 +753,6 @@ h3 {
     background-image: url("/public/assets/icons/apple/icon-apple_logo-purple-edited.svg");
   }
 }
-
-/* main:has(.maximixed[open]) .theme-toggle {
-  z-index: 5;
-} */
 
 /* NAVBAR Component */
 
@@ -872,12 +869,15 @@ dialog[open] {
   max-width: 100vw;
   max-height: calc(100vh - var(--nav-bar-height));
   max-height: calc(100dvh - var(--nav-bar-height));
+  height: 100vh;
+  height: 100vh;
   width: min(100% - 2rem, 100ch);
   inset-block: var(--_pos-block);
-  border: none;
+  border-color: color-mix(in oklch, currentColor, transparent 70%);
   border-radius: var(--br-default);
   overflow: hidden;
   transition: all var(--default-trans-dur);
+  /* resize: both; */
 
   &::-webkit-scrollbar {
     display: none;
@@ -885,16 +885,16 @@ dialog[open] {
 
   &:is(.maximized) {
     --_pos-block: 0 0;
-    --dialog-dynamic-z-index: 1000;
     width: 100vw;
     height: 100vh;
     height: 100dvh;
+    max-height: 100vh;
+    max-height: 100dvh;
   }
 
   &:is(.minimized) {
     width: revert;
     height: revert;
-    border: 0.8px solid;
 
     > *:not(.utility-bar) {
       height: 0;
@@ -908,8 +908,6 @@ dialog[open] {
   }
 
   & .utility-bar {
-    /* position: sticky; */
-    top: 0;
     z-index: 5;
   }
 
@@ -917,7 +915,15 @@ dialog[open] {
     overflow-y: auto;
     height: 100%;
 
-    :not(.minimized &)&:has(.portfolio-grid-wrapper) {
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    &:not(.minimized) & {
+      padding-block-end: 1em;
+    }
+
+    &:not(.minimized &)&:has(.portfolio-grid-wrapper) {
       padding: var(--padding-default);
     }
 
@@ -925,6 +931,16 @@ dialog[open] {
       background-color: var(--clr-bg-body);
     }
   }
+
+  &:has(.resume-wrapper) {
+    height: 100%;
+    background-color: var(--clr-bg-body);
+  }
+
+  &:has(iframe[title*="Portfolio Item"]):not(.minimized) {
+    height: 100%;
+  }
+
   & iframe {
     display: block;
   }
@@ -938,6 +954,11 @@ dialog[open] {
   height: min(600px, 100vh - var(--nav-bar-height));
   height: min(600px, 100dvh - var(--nav-bar-height));
   scrollbar-gutter: stable;
+
+  & [data-btn-maximize-dialog] {
+    pointer-events: none;
+    cursor: no-drop;
+  }
 
   & [btn-close] {
     padding: 0.5em;
@@ -1075,6 +1096,10 @@ dialog[open] {
 
 /* MARK: Apple Specific Styles */
 [data-theme="apple"] {
+  .theme-toggle {
+    --_bottom: calc(100vh - (var(--apple-task-bar-offset) - 0.5em));
+  }
+
   /* NAVBAR Component in APPLE Theme */
   .nav-bar {
     background-color: var(--clr-neutral-900);
@@ -1109,6 +1134,7 @@ dialog[open] {
       display: none;
     }
   }
+
   .taskbar {
     position: relative;
     border-radius: 1em;
@@ -1139,7 +1165,7 @@ dialog[open] {
         aspect-ratio: 1.25 / 1;
       }
 
-      &::before {
+      /* &::before {
         content: attr(data-name);
         text-transform: capitalize;
         font-size: 0.8em;
@@ -1163,7 +1189,7 @@ dialog[open] {
       &:is(:hover, :focus-visible)::before {
         opacity: 1;
         visibility: visible;
-      }
+      } */
 
       & img.img-cover {
         object-fit: cover;
@@ -1189,17 +1215,22 @@ dialog[open] {
 
   /* DIALOG Component in APPLE Theme */
   dialog[open] {
-    --_pos-block: var(--nav-bar-height) var(--apple-task-bar-offset);
+    --_pos-block: var(--nav-bar-height)
+      calc(100% - var(--apple-task-bar-offset));
 
-    &:not(.maximized) {
+    &:is(.maximized) {
+      --_pos-block: 0 0;
+    }
+
+    &:not(.maximized, .minimized) {
       max-height: calc(
         100vh - var(--nav-bar-height) - (100vh - var(--apple-task-bar-offset)) -
           0.5em
       );
-    }
-
-    &:is(.maximized) {
-      --_pos-block: 0 0;
+      height: calc(
+        100vh - var(--nav-bar-height) - (100vh - var(--apple-task-bar-offset)) -
+          0.5em
+      );
     }
 
     &:is(.minimized) [data-btn-minimize-dialog] {
@@ -1304,11 +1335,11 @@ dialog[open] {
   }
 
   /* DIALOG Component in MICROSOFT Theme */
-  dialog:is([open]) {
+  dialog[open] {
     --_pos-block: 0 var(--nav-bar-height);
 
-    &:is(.maximized) {
-      --_pos-block: 0 0;
+    &:not(.maximized, .minimized) {
+      height: calc(100vh - var(--nav-bar-height));
     }
 
     & .utility-bar {

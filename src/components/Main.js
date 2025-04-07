@@ -53,7 +53,7 @@ export default function Main() {
     } finally {
       openDialog("portfolio");
     }
-  }, []);
+  }, [openDialog]);
 
   // Handle portfolio item click to open dialog and load iframe URL
   function handlePortfolioItemClick(url) {
@@ -122,6 +122,9 @@ export default function Main() {
         </Dialog>
         <Dialog id="resume">
           <ResumeWrapper />
+        </Dialog>
+        <Dialog id="browser">
+          <iframe src="https://google.com" title="Browser"></iframe>
         </Dialog>
       </main>
       <footer>
