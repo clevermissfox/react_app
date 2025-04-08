@@ -1,5 +1,4 @@
 import "./styles.css";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ThemeProvider from "./context/ThemeProvider";
 import { DialogProvider } from "./context/DialogContext";
 import NavBar from "./components/NavBar";
@@ -9,17 +8,13 @@ import Main from "./components/Main";
 export default function App() {
   return (
     <ThemeProvider>
-      <Router>
-        <DialogProvider>
-          <div className="App">
-            <NavBar />
-            <Routes>
-              <Route Route path="/:dialogId?" element={<Main />} />
-            </Routes>
-            <ThemeToggle />
-          </div>
-        </DialogProvider>
-      </Router>
+      <DialogProvider>
+        <div className="App">
+          <NavBar />
+          <Main />
+          <ThemeToggle />
+        </div>
+      </DialogProvider>
     </ThemeProvider>
   );
 }

@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect, useCallback } from "react";
-import { Routes, Route, useParams, useNavigate } from "react-router-dom";
+
 import ThemeContext from "../context/ThemeContext";
 import { useDialog } from "../context/DialogContext";
 import { useNavBarHeight } from "../hooks/useNavBarHeight";
@@ -23,9 +23,6 @@ export default function Main() {
 
   // set navbar height for css
   useNavBarHeight();
-
-  // Initialize useNavigate
-  const navigate = useNavigate();
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -76,23 +73,6 @@ export default function Main() {
   }, [isPortfolioDialogOpen]); // Simplified dependency array
 
   const appIcons = ApplicationData({ theme, fetchPortfolioData });
-
-  const { dialogId } = useParams(); // Get dialogId from URL
-
-  useEffect(() => {
-    console.log(dialogs);
-    console.log("dialogID", dialogId);
-  }, [dialogs, dialogId]);
-
-  // Use useEffect to open dialog based on route parameter
-  useEffect(() => {
-    if (dialogId && dialogs[dialogId] && dialogs[dialogId].isOpen === false) {
-      openDialog(dialogId);
-      if (dialogs[dialogId] === dialogs["portfolio"]) {
-        fetchPortfolioData();
-      }
-    }
-  }, [dialogId, dialogs, openDialog, portfolioData]);
 
   return (
     <>
@@ -145,7 +125,12 @@ export default function Main() {
           <ResumeWrapper />
         </Dialog>
         <Dialog id="browser">
-          <iframe src="https://google.com" title="Browser"></iframe>
+          <iframe
+            src="https://www.google.com/search?q=edico+designs&rlz=1C5MACD_enUS1062US1062&oq=edico+designs&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIGCAEQRRg9MgYIAhBFGD0yBggDEEUYPdIBCDE4NTRqMGo0qAIAsAIB&sourceid=chrome&ie=UTF-8"
+            title="Browser"
+            sandbox="allow-presentation"
+            referrerpolicy="origin"
+          ></iframe>
         </Dialog>
       </main>
       <footer>
