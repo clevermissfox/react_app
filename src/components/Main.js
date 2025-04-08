@@ -1,4 +1,5 @@
 import { useContext, useState, useEffect, useCallback } from "react";
+import { Routes, Route, useParams, useNavigate } from "react-router-dom";
 import ThemeContext from "../context/ThemeContext";
 import { useDialog } from "../context/DialogContext";
 import { useNavBarHeight } from "../hooks/useNavBarHeight";
@@ -22,6 +23,9 @@ export default function Main() {
 
   // set navbar height for css
   useNavBarHeight();
+
+  // Initialize useNavigate
+  const navigate = useNavigate();
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -72,6 +76,23 @@ export default function Main() {
   }, [isPortfolioDialogOpen]); // Simplified dependency array
 
   const appIcons = ApplicationData({ theme, fetchPortfolioData });
+
+  const { dialogId } = useParams(); // Get dialogId from URL
+
+  useEffect(() => {
+    console.log(dialogs);
+    console.log("dialogID", dialogId);
+  }, [dialogs, dialogId]);
+
+  // Use useEffect to open dialog based on route parameter
+  useEffect(() => {
+    if (dialogId && dialogs[dialogId] && dialogs[dialogId].isOpen === false) {
+      openDialog(dialogId);
+      if (dialogs[dialogId] === dialogs["portfolio"]) {
+        fetchPortfolioData();
+      }
+    }
+  }, [dialogId, dialogs, openDialog, portfolioData]);
 
   return (
     <>
@@ -130,11 +151,11 @@ export default function Main() {
       <footer>
         {theme === "apple" && <AppleTaskbar appIcons={appIcons} />}
       </footer>
-      <script
+      {/* <script
         type="text/javascript"
         src="https://assets.calendly.com/assets/external/widget.js"
         async
-      ></script>
+      ></script> */}
     </>
   );
 }

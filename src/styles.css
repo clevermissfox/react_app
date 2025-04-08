@@ -72,6 +72,7 @@
   --timing-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
   --nav-bar-height: 2rem;
   --apple-task-bar-offset: 2rem;
+  --utility-bar-height: 2rem;
   interpolate-size: allow-keywords;
 }
 
@@ -913,14 +914,10 @@ dialog[open] {
 
   & .dialog-content {
     overflow-y: auto;
-    height: 100%;
+    height: calc(100% - var(--utility-bar-height));
 
     &::-webkit-scrollbar {
       display: none;
-    }
-
-    &:not(.minimized) & {
-      padding-block-end: 1em;
     }
 
     &:not(.minimized &)&:has(.portfolio-grid-wrapper) {
@@ -954,11 +951,6 @@ dialog[open] {
   height: min(600px, 100vh - var(--nav-bar-height));
   height: min(600px, 100dvh - var(--nav-bar-height));
   scrollbar-gutter: stable;
-
-  & [data-btn-maximize-dialog] {
-    pointer-events: none;
-    cursor: no-drop;
-  }
 
   & [btn-close] {
     padding: 0.5em;
@@ -1337,6 +1329,10 @@ dialog[open] {
   /* DIALOG Component in MICROSOFT Theme */
   dialog[open] {
     --_pos-block: 0 var(--nav-bar-height);
+
+    &:is(.maximized) {
+      --_pos-block: 0 0;
+    }
 
     &:not(.maximized, .minimized) {
       height: calc(100vh - var(--nav-bar-height));
