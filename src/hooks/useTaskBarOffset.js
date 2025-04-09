@@ -11,14 +11,19 @@ export function useTaskBarOffset() {
     const updateTaskBarOffset = () => {
       if (theme === "apple") {
         const taskBar = document.querySelector("footer:has(.taskbar)");
-        if (taskBar) {
-          const top = taskBar.offsetTop;
-          setTaskBarOffset(top);
 
-          document.documentElement.style.setProperty(
-            "--apple-task-bar-offset",
-            `${top}px`
-          );
+        if (taskBar) {
+          // Defer to next frame to ensure layout is stable
+          requestAnimationFrame(() => {
+            // const rect = taskBar.getBoundingClientRect();
+            // const top = rect.top + window.scrollY;
+            const top = taskBar.offsetTop;
+            setTaskBarOffset(top);
+            document.documentElement.style.setProperty(
+              "--apple-task-bar-offset",
+              `${top}px`
+            );
+          });
         }
       }
     };

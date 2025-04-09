@@ -12,20 +12,24 @@ export function useNavBarHeight() {
       const navBar = document.querySelector(".nav-bar");
       const utilityBar = document.querySelector("dialog[open] .utility-bar");
       if (navBar) {
-        const height = navBar.offsetHeight;
-        setNavBarHeight(height);
-        document.documentElement.style.setProperty(
-          "--nav-bar-height",
-          `${height}px`
-        );
+        requestAnimationFrame(() => {
+          const height = navBar.offsetHeight;
+          setNavBarHeight(height);
+          document.documentElement.style.setProperty(
+            "--nav-bar-height",
+            `${height}px`
+          );
+        });
       }
 
       if (utilityBar) {
-        const height = utilityBar.offsetHeight;
-        document.documentElement.style.setProperty(
-          "--utility-bar-height",
-          `${height}px`
-        );
+        requestAnimationFrame(() => {
+          const height = utilityBar.offsetHeight;
+          document.documentElement.style.setProperty(
+            "--utility-bar-height",
+            `${height}px`
+          );
+        });
       }
     };
 
