@@ -71,7 +71,7 @@
   --theme-transition-dur: calc(var(--default-trans-dur) * 2);
   --timing-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
   --nav-bar-height: 2rem;
-  --apple-task-bar-offset: 2rem;
+  --apple-task-bar-offset: 0;
   --utility-bar-height: 2rem;
   interpolate-size: allow-keywords;
 }
@@ -133,7 +133,7 @@ a {
   display: inline-block;
 }
 
-:is(ul, ol) {
+:not(.list):is(ul, ol) {
   list-style: "";
 }
 
@@ -774,6 +774,7 @@ h3 {
 .start-menu {
   display: grid;
   place-content: center;
+  position: relative;
 }
 
 .start-btn {
@@ -810,6 +811,48 @@ h3 {
   }
 }
 
+[popover]:is([id="start-menu-context"]):popover-open {
+  --_start-menu-context-positioning: var(--nav-bar-height) auto;
+  position: absolute;
+  inset-block: var(--_start-menu-context-positioning);
+}
+
+[popover]:is([id="start-menu-context"]):popover-open ul {
+  list-style: "💟";
+  border-radius: var(--br-default);
+
+  & > li {
+    position: relative;
+    padding: 0.8em;
+  }
+
+  & > li::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    width: 0;
+    z-index: -5;
+    background-image: linear-gradient(
+      to right,
+      var(--clr-brand-accent),
+      var(--clr-brand-accent-2)
+    );
+    transition: width var(--default-trans-dur);
+  }
+
+  & > li:has(:focus-within, :hover) {
+    outline: 1px solid -webkit-tap-highlight-color;
+
+    &::before {
+      width: 100%;
+    }
+  }
+
+  & > li > * {
+    line-height: 1;
+    outline: none;
+  }
+}
 .nav-bar-tool {
   align-content: center;
   inline-size: 1.25em;
@@ -998,13 +1041,15 @@ dialog[open] {
   & * {
     --delay: 0ms;
     transform-origin: center;
-    transition: opacity 8000ms var(--delay) ease-in,
-      scale 8000ms var(--delay) ease-in;
+    transition: opacity 800ms var(--delay) ease-in,
+      scale 800ms var(--delay) ease-in;
   }
 
   @starting-style {
-    opacity: 0;
-    scale: 0.9;
+    & * {
+      opacity: 0;
+      scale: 0.9;
+    }
   }
 }
 
@@ -1286,6 +1331,10 @@ dialog[open] {
       top: 0;
       transform: translateY(-130%);
     }
+  }
+
+  [popover]:is([id="start-menu-context"]):popover-open {
+    --_start-menu-context-positioning: auto var(--nav-bar-height);
   }
 
   /* TASKBAR Component in MICROSOFT Theme */

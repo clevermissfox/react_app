@@ -1,8 +1,10 @@
 import { useContext, useState, useEffect, useCallback } from "react";
+// import { useParams, useNavigate } from "react-router-dom";
 
 import ThemeContext from "../context/ThemeContext";
 import { useDialog } from "../context/DialogContext";
 import { useNavBarHeight } from "../hooks/useNavBarHeight";
+import { useTaskBarOffset } from "../hooks/useTaskBarOffset";
 
 import { supabase } from "../config/supabase-config";
 
@@ -16,12 +18,16 @@ export default function Main() {
   const { theme } = useContext(ThemeContext);
   const [portfolioData, setPortfolioData] = useState(null);
   const { dialogs, openDialog } = useDialog();
+  // const { dialogId } = useParams();
+  // const navigate = useNavigate();
 
   const [currentIframeUrl, setCurrentIframeUrl] = useState(null);
   const [error, setError] = useState(null);
 
   // set navbar height for css
   useNavBarHeight();
+  // set the top position of taskbar on apple theme for dialog calculations
+  useTaskBarOffset();
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -72,6 +78,16 @@ export default function Main() {
   }, [isPortfolioDialogOpen]); // Simplified dependency array
 
   const appIcons = ApplicationData({ theme, fetchPortfolioData });
+
+  // useEffect(() => {
+  //   if (dialogId && dialogs[dialogId] && dialogs[dialogId].isOpen === false) {
+  //     openDialog(dialogId);
+  //     if (dialogId === "portfolio") {
+  //       // Check if it's the portfolio dialog
+  //       fetchPortfolioData();
+  //     }
+  //   }
+  // }, [dialogId, dialogs, openDialog, portfolioData]);
 
   return (
     <>
@@ -141,15 +157,26 @@ export default function Main() {
             width="100%"
           ></iframe>
         </Dialog>
+        <Dialog id="quote">
+          <iframe
+            src="https://edicodesigns.com/quote"
+            title="Request a Quote"
+            height="100%"
+            width="100%"
+          ></iframe>
+        </Dialog>
         <Dialog id="trash">
           <h2 className="ta-cen invert padding-1">
             The trash button is just for decoration 🗑️
           </h2>
         </Dialog>
       </main>
-      <footer>
-        {theme === "apple" && <AppleTaskbar appIcons={appIcons} />}
-      </footer>
+
+      {theme === "apple" && (
+        <footer>
+          <AppleTaskbar appIcons={appIcons} />{" "}
+        </footer>
+      )}
     </>
   );
 }

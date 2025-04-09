@@ -1,9 +1,10 @@
 import { createContext, useState, useContext } from "react";
-
+// import { useNavigate } from "react-router-dom";
 const DialogContext = createContext();
 
 export const DialogProvider = ({ children }) => {
   const [dialogs, setDialogs] = useState({});
+  // const {navigate} = useNavigate();
 
   const registerDialog = (id) => {
     setDialogs((prev) => {
@@ -49,6 +50,10 @@ export const DialogProvider = ({ children }) => {
       ...prev,
       [id]: { ...prev[id], isOpen: false, zIndex: "auto" },
     }));
+    // If the dialog was opened via a route, navigate back to the home route
+    // if (window.location.pathname === `/${id}`) {
+    //   navigate("/");
+    // }
   };
 
   const minimizeDialog = (id) => {

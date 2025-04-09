@@ -1,9 +1,12 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
+import { useDialog } from "../context/DialogContext";
 import ThemeContext from "../context/ThemeContext";
 import BatteryStatusIcon from "./BatteryStatusIcon";
 
 export default function NavBar() {
   const { theme } = useContext(ThemeContext);
+  const { dialogs, openDialog } = useDialog();
+  const startContextMenuPopoverRef = useRef();
   // Initialize both date and time with their current values
   const [date, setDate] = useState(() => getDate(theme));
   const [time, setTime] = useState(getTime);
@@ -48,6 +51,10 @@ export default function NavBar() {
     return time;
   }
 
+  function closePopover() {
+    startContextMenuPopoverRef.current?.hidePopover();
+  }
+
   useEffect(() => {
     // Update time every second
     const intervalId = setInterval(() => {
@@ -67,7 +74,57 @@ export default function NavBar() {
           aria-label={
             theme === "apple" ? "Apple Start Menu" : "Windows Start Menu"
           }
+          popovertarget="start-menu-context"
         ></button>
+        <div
+          id="start-menu-context"
+          popover="auto"
+          ref={startContextMenuPopoverRef}
+        >
+          <ul class="start-menu-context-list">
+            <li>
+              <button
+                onClick={() => {
+                  openDialog("quote");
+                  closePopover();
+                }}
+              >
+                Request a Quote
+              </button>
+            </li>
+            <li>
+              <button
+                onClick={() => {
+                  openDialog("calendar");
+                  closePopover();
+                }}
+              >
+                Book Free Consult
+              </button>
+            </li>
+            <li>
+              <a
+                href="mailto:connect@edicodesigns.com"
+                target="_blank"
+                onClick={() => {
+                  closePopover();
+                }}
+              >
+                Email Me
+              </a>
+            </li>
+            <li>
+              <button
+                onClick={() => {
+                  openDialog("contact");
+                  closePopover();
+                }}
+              >
+                Contact Form
+              </button>
+            </li>
+          </ul>
+        </div>
       </div>
       {theme === "microsoft" && (
         <div className="taskbar">
