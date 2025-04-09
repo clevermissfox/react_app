@@ -7,6 +7,7 @@ export default function MicrosoftButtonApplication({
 }) {
   return (
     <button
+      type="button"
       className={`wind-desktop-btn ${classes}`}
       aria-label={dataName}
       disabled={disabled}

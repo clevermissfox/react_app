@@ -77,7 +77,7 @@ export default function ApplicationData({ theme, ...props }) {
           ? "/assets/icons/apple/application-icons/icon-apple_mail-logo.svg"
           : "/assets/images/image-icons/img-windows_envelope.png",
       imgClasses: theme === "apple" ? "img-cover" : "",
-      handleClick: null,
+      handleClick: () => openDialog("contact"),
       disabled: false,
     },
     {
@@ -88,7 +88,7 @@ export default function ApplicationData({ theme, ...props }) {
           ? "/assets/icons/apple/application-icons/icon-apple_trash-logo.png"
           : null,
       imgClasses: null,
-      handleClick: null,
+      handleClick: () => openDialog("trash"),
       disabled: false,
       isAppleOnly: true,
     },

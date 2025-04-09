@@ -61,6 +61,7 @@ export default function Dialog({ id, classes, children }) {
         {theme === "apple" && (
           <>
             <button
+              type="button"
               className="grid pi-cen"
               data-btn-close-dialog
               aria-label="Close dialog"
@@ -69,6 +70,7 @@ export default function Dialog({ id, classes, children }) {
               <i className="fa fa-xmark" aria-hidden="true"></i>
             </button>
             <button
+              type="button"
               className="grid pi-cen"
               data-btn-minimize-dialog
               aria-label="Minimize dialog"
@@ -77,6 +79,7 @@ export default function Dialog({ id, classes, children }) {
               <i className="fa fa-minus" aria-hidden="true"></i>
             </button>
             <button
+              type="button"
               className="grid pi-cen"
               data-btn-maximize-dialog
               aria-label="Maximize dialog"
@@ -89,6 +92,7 @@ export default function Dialog({ id, classes, children }) {
         {theme === "microsoft" && (
           <>
             <button
+              type="button"
               className="grid pi-cen"
               data-btn-minimize-dialog
               aria-label="Minimize dialog"
@@ -97,6 +101,7 @@ export default function Dialog({ id, classes, children }) {
               <i className="fa fa-minus" aria-hidden="true"></i>
             </button>
             <button
+              type="button"
               className="grid pi-cen"
               data-btn-maximize-dialog
               aria-label="Maximize dialog"
@@ -105,6 +110,7 @@ export default function Dialog({ id, classes, children }) {
               <i className="far fa-square" aria-hidden="true"></i>
             </button>
             <button
+              type="button"
               className="grid pi-cen"
               data-btn-close-dialog
               aria-label="Close dialog"

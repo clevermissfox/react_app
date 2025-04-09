@@ -8,6 +8,7 @@ export default function AppleButtonApplication({
 }) {
   return (
     <button
+      type="button"
       className={classes ? classes : undefined}
       data-name={dataName}
       title={dataName}
@@ -19,6 +20,8 @@ export default function AppleButtonApplication({
         className={imgClasses ? imgClasses : undefined}
         src={imgSrc}
         alt={`${dataName} icon`}
+        width="48"
+        height="48"
       />
     </button>
   );

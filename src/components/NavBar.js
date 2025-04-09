@@ -4,7 +4,6 @@ import BatteryStatusIcon from "./BatteryStatusIcon";
 
 export default function NavBar() {
   const { theme } = useContext(ThemeContext);
-  // const [isApple, setIsApple] = useState(theme === 'apple');
   // Initialize both date and time with their current values
   const [date, setDate] = useState(() => getDate(theme));
   const [time, setTime] = useState(getTime);
@@ -63,6 +62,7 @@ export default function NavBar() {
     <nav className="nav-bar">
       <div className="start-menu">
         <button
+          type="button"
           className="start-btn"
           aria-label={
             theme === "apple" ? "Apple Start Menu" : "Windows Start Menu"
@@ -71,25 +71,25 @@ export default function NavBar() {
       </div>
       {theme === "microsoft" && (
         <div className="taskbar">
-          <button>
+          <button type="button">
             <img
               src="/assets/icons/microsoft/icon-windows_chrome-logo.svg"
               alt=""
             />
           </button>
-          <button>
+          <button type="button">
             <img
               src="/assets/icons/microsoft/icon-windows_chrome-logo.svg"
               alt=""
             />
           </button>
-          <button>
+          <button type="button">
             <img
               src="/assets/icons/microsoft/icon-windows_chrome-logo.svg"
               alt=""
             />
           </button>
-          <button>
+          <button type="button">
             <img
               src="/assets/icons/microsoft/icon-windows_chrome-logo.svg"
               alt=""

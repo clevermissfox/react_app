@@ -60,6 +60,7 @@ export default function ResumeWrapper() {
             {["Design", "Development", "Tools"].map((category) => (
               <li key={category} role="presentation">
                 <button
+                  type="button"
                   role="tab"
                   aria-selected={activeCat === category}
                   className="tab"

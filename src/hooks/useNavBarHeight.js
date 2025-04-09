@@ -9,6 +9,7 @@ export function useNavBarHeight() {
 
   useEffect(() => {
     const updateNavBarHeight = () => {
+      console.log("update nav bar height hook");
       const navBar = document.querySelector(".nav-bar");
       const taskBar = document.querySelector("footer:has(.taskbar)");
       const utilityBar = document.querySelector("dialog[open] .utility-bar");

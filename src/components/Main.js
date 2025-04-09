@@ -15,7 +15,6 @@ import ResumeWrapper from "./ResumeWrapper";
 export default function Main() {
   const { theme } = useContext(ThemeContext);
   const [portfolioData, setPortfolioData] = useState(null);
-  // const [isLoading, setIsLoading] = useState(false);
   const { dialogs, openDialog } = useDialog();
 
   const [currentIframeUrl, setCurrentIframeUrl] = useState(null);
@@ -83,12 +82,13 @@ export default function Main() {
           </>
         )}
         <Dialog id="portfolio">
-          {error && <p className="error">Error: {error}</p>}
+          {(error || !portfolioData) && <p className="error">Error: {error}</p>}
           {portfolioData && (
             <div className="portfolio-grid-wrapper">
               <div className="portfolio-grid">
                 {portfolioData.map((data) => (
                   <button
+                    type="button"
                     onClick={() => handlePortfolioItemClick(data.url)}
                     data-id={data.id}
                     key={data.id}
@@ -124,23 +124,32 @@ export default function Main() {
         <Dialog id="resume">
           <ResumeWrapper />
         </Dialog>
+
         <Dialog id="browser">
           <iframe
-            src="https://www.google.com/search?q=edico+designs&rlz=1C5MACD_enUS1062US1062&oq=edico+designs&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIGCAEQRRg9MgYIAhBFGD0yBggDEEUYPdIBCDE4NTRqMGo0qAIAsAIB&sourceid=chrome&ie=UTF-8"
+            src="https://edicodesigns.com"
             title="Browser"
-            sandbox="allow-presentation"
-            referrerpolicy="origin"
+            height="100%"
+            width="100%"
           ></iframe>
+        </Dialog>
+        <Dialog id="contact">
+          <iframe
+            src="https://edicodesigns.com/connect"
+            title="Contact Form"
+            height="100%"
+            width="100%"
+          ></iframe>
+        </Dialog>
+        <Dialog id="trash">
+          <h2 className="ta-cen invert padding-1">
+            The trash button is just for decoration 🗑️
+          </h2>
         </Dialog>
       </main>
       <footer>
         {theme === "apple" && <AppleTaskbar appIcons={appIcons} />}
       </footer>
-      {/* <script
-        type="text/javascript"
-        src="https://assets.calendly.com/assets/external/widget.js"
-        async
-      ></script> */}
     </>
   );
 }
