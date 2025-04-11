@@ -50,6 +50,12 @@ export default function ResumeWrapper() {
 
   return (
     <div className="resume-wrapper">
+      <div className="small row gap-half padding-bs-1 padding-i-1">
+        <i className="fas fa-link" aria-hidden="true"></i>{" "}
+        <a href="assets/documents/2025-Resume_Dev+Design.pdf" download>
+          Download CSV
+        </a>
+      </div>
       <header className="padding-b-1">
         <nav className="wrapper">
           <ul

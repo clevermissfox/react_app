@@ -400,8 +400,24 @@ button {
   padding-block: 1em;
 }
 
+.padding-bs-1 {
+  padding-block-start: 1em;
+}
+
+.padding-be-1 {
+  padding-block-end: 1em;
+}
+
 .padding-i-1 {
   padding-inline: 1em;
+}
+
+.padding-is-1 {
+  padding-inline-start: 1em;
+}
+
+.padding-ie-1 {
+  padding-inline-end: 1em;
 }
 
 .padding-half {
@@ -412,8 +428,24 @@ button {
   padding-block: 0.5em;
 }
 
+.padding-bs-half {
+  padding-block-start: 0.5em;
+}
+
+.padding-be-half {
+  padding-block-end: 0.5em;
+}
+
 .padding-i-half {
   padding-inline: 0.5em;
+}
+
+.padding-is-half {
+  padding-inline-start: 0.5em;
+}
+
+.padding-ie-half {
+  padding-inline-end: 0.5em;
 }
 
 /* 2em */
@@ -876,6 +908,7 @@ ul.date:is(.col) {
     aspect-ratio: 1;
     display: grid;
     place-content: center;
+    grid-template-columns: 1fr;
 
     & img {
       width: 100%;
@@ -1038,7 +1071,7 @@ dialog[open] {
     height: 100%;
   }
 
-  & * {
+  & :is(.tablist, .content-column, .logo-list) {
     --delay: 0ms;
     transform-origin: center;
     transition: opacity 800ms var(--delay) ease-in,
@@ -1046,7 +1079,7 @@ dialog[open] {
   }
 
   @starting-style {
-    & * {
+    & :is(.tablist, .content-column, .logo-list) {
       opacity: 0;
       scale: 0.9;
     }

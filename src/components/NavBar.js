@@ -81,7 +81,7 @@ export default function NavBar() {
           popover="auto"
           ref={startContextMenuPopoverRef}
         >
-          <ul class="start-menu-context-list">
+          <ul className="start-menu-context-list">
             <li>
               <button
                 onClick={() => {

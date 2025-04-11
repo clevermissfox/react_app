@@ -10,7 +10,6 @@ export default function LogoItem({ item, isSelected, onClick }) {
         aria-controls="content-column"
         onClick={() => onClick(item)}
       >
-        <p>Can you see me on iOs?</p>
         <svg className="icon" viewBox="0 0 150 150" width="150" height="150">
           <use href={`#${item.svgID}`} />
         </svg>
