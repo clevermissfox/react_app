@@ -173,7 +173,7 @@ export default function Main() {
       </main>
 
       {theme === "apple" && (
-        <footer>
+        <footer className="footer">
           <AppleTaskbar appIcons={appIcons} />{" "}
         </footer>
       )}

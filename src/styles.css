@@ -1184,7 +1184,7 @@ dialog[open] {
     padding-block-end: 0.5em;
   }
 
-  & footer:is(:has(.taskbar)) {
+  & .footer:has(.taskbar) {
     position: fixed;
     left: 0;
     right: 0;
@@ -1193,7 +1193,7 @@ dialog[open] {
     overflow-x: auto;
   }
 
-  & footer:is(:has(.taskbar))::-webkit-scrollbar {
+  & .footer:has(.taskbar)::-webkit-scrollbar {
     display: none;
   }
 
@@ -1425,14 +1425,14 @@ dialog[open] {
       }
 
       &
-        :where([data-btn-minimize-dialog], [data-btn-maximize-dialog]):is(
-          :hover,
-          :focus-visible
+        :is(
+          [data-btn-minimize-dialog]:is(:hover, :focus-visible),
+          [data-btn-maximize-dialog]:is(:hover, :focus-visible)
         ) {
         background-color: var(--clr-mic-neutral-650);
       }
 
-      & [data-btn-close-dialog]:is(:hover, :focus-visible) {
+      & :is([data-btn-close-dialog]:is(:hover, :focus-visible)) {
         background-color: var(--clr-mic-dialog-btn-close);
       }
     }
