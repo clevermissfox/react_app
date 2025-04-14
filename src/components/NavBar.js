@@ -82,7 +82,7 @@ export default function NavBar() {
           ref={startContextMenuPopoverRef}
         >
           <ul className="start-menu-context-list">
-            <li>
+            <li className="start-menu-context-item">
               <button
                 onClick={() => {
                   openDialog("quote");
@@ -92,7 +92,7 @@ export default function NavBar() {
                 Request a Quote
               </button>
             </li>
-            <li>
+            <li className="start-menu-context-item">
               <button
                 onClick={() => {
                   openDialog("calendar");
@@ -102,7 +102,7 @@ export default function NavBar() {
                 Book Free Consult
               </button>
             </li>
-            <li>
+            <li className="start-menu-context-item">
               <a
                 href="mailto:connect@edicodesigns.com"
                 target="_blank"
@@ -113,7 +113,7 @@ export default function NavBar() {
                 Email Me
               </a>
             </li>
-            <li>
+            <li className="start-menu-context-item">
               <button
                 onClick={() => {
                   openDialog("contact");
