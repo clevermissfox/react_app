@@ -8,6 +8,7 @@
 }
 
 :root {
+  --check-if-updates: 0;
   /* FONT SIZES */
   font-family: var(--ff-primary);
   font-weight: var(--fw-body);
