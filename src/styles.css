@@ -8,7 +8,7 @@
 }
 
 :root {
-  --check-if-updates: 0;
+  --check-if-updates: 1;
   /* FONT SIZES */
   font-family: var(--ff-primary);
   font-weight: var(--fw-body);
@@ -859,7 +859,7 @@ h3 {
     padding: 0.8em;
   }
 
-  & > li::before {
+  & > li:before {
     content: "";
     position: absolute;
     inset: 0;
@@ -1188,7 +1188,6 @@ dialog[open] {
     padding-block-end: 0.5em;
   }
 
-  /* TASKBAR Component in APPLE Theme */
   footer:has(.taskbar) {
     position: fixed;
     left: 0;
@@ -1196,10 +1195,10 @@ dialog[open] {
     bottom: 1rem;
     padding-inline: 1rem;
     overflow-x: auto;
+  }
 
-    &::-webkit-scrollbar {
-      display: none;
-    }
+  footer:has(.taskbar)::-webkit-scrollbar {
+    display: none;
   }
 
   .taskbar {
