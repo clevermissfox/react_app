@@ -18,6 +18,9 @@ export default function Main() {
   const { theme } = useContext(ThemeContext);
   const [portfolioData, setPortfolioData] = useState(null);
   const { dialogs, openDialog } = useDialog();
+  const [sourceURLs, setSourceURLs] = useState([]);
+  const [isCalendlyScriptLoaded, setIsCalendlyScriptLoaded] = useState(false);
+
   // const { dialogId } = useParams();
   // const navigate = useNavigate();
 
@@ -30,15 +33,62 @@ export default function Main() {
   useTaskBarOffset();
 
   useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://assets.calendly.com/assets/external/widget.js";
-    script.async = true;
-    document.body.appendChild(script);
+    // Initialize source URLs for dialogs
+    setSourceURLs([
+      {
+        dialogID: "portfolio-item",
+        url: currentIframeUrl || "",
+      },
+      {
+        dialogID: "contact",
+        url: "https://edicodesigns.com/connect",
+      },
+      {
+        dialogID: "browser",
+        url: "https://edicodesigns.com",
+      },
+      {
+        dialogID: "quote",
+        url: "https://edicodesigns.com/quote",
+      },
+      {
+        dialogID: "calendar",
+        url: "https://calendly.com/edicodesigner/freeconsultation?hide_event_type_details=1&background_color=000&text_color=ffffff&primary_color=a588ca",
+      },
+    ]);
+  }, [currentIframeUrl]);
 
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
+  useEffect(() => {
+    if (dialogs["calendar"]?.isOpen && !isCalendlyScriptLoaded) {
+      const script = document.createElement("script");
+      script.src = "https://assets.calendly.com/assets/external/widget.js";
+      script.async = true;
+
+      script.onload = () => {
+        setTimeout(() => {
+          setIsCalendlyScriptLoaded(true);
+        }, 100); // Slight delay
+      };
+
+      document.body.appendChild(script);
+
+      return () => {
+        document.body.removeChild(script);
+        setIsCalendlyScriptLoaded(false);
+      };
+    }
+  }, [dialogs["calendar"]?.isOpen]);
+
+  // useEffect(() => {
+  //   const script = document.createElement("script");
+  //   script.src = "https://assets.calendly.com/assets/external/widget.js";
+  //   script.async = true;
+  //   document.body.appendChild(script);
+
+  //   return () => {
+  //     document.body.removeChild(script);
+  //   };
+  // }, []);
 
   // get the portfolio data from supabase
   const fetchPortfolioData = useCallback(async () => {
@@ -119,21 +169,29 @@ export default function Main() {
           )}
         </Dialog>
 
-        {currentIframeUrl && (
-          <Dialog id="portfolio-item">
+        <Dialog id="portfolio-item">
+          {dialogs["portfolio-item"]?.isOpen && (
             <iframe
-              src={currentIframeUrl}
+              src={
+                sourceURLs.find((x) => x.dialogID === "portfolio-item")?.url ||
+                currentIframeUrl
+              }
+              loading="lazy"
               title="Portfolio Item"
               height="100%"
               width="100%"
-              frameBorder="0"
             ></iframe>
-          </Dialog>
-        )}
+          )}
+        </Dialog>
+
         <Dialog id="calendar" classes="dialog-cal">
           <div
             className="calendly-inline-widget"
-            data-url="https://calendly.com/edicodesigner/freeconsultation?hide_event_type_details=1&background_color=000&text_color=ffffff&primary_color=a588ca"
+            data-url={
+              dialogs["calendar"]?.isOpen // Set data-url only if the dialog is open
+                ? sourceURLs.find((x) => x.dialogID === "calendar")?.url || ""
+                : null // Null for data-url when the dialog is closed
+            }
             style={{ minWidth: "320px", height: "100%" }}
           ></div>
         </Dialog>
@@ -142,28 +200,37 @@ export default function Main() {
         </Dialog>
 
         <Dialog id="browser">
-          <iframe
-            src="https://edicodesigns.com"
-            title="Browser"
-            height="100%"
-            width="100%"
-          ></iframe>
+          {dialogs["browser"]?.isOpen && (
+            <iframe
+              src={sourceURLs.find((x) => x.dialogID === "browser")?.url || ""}
+              loading="lazy"
+              title="Browser"
+              height="100%"
+              width="100%"
+            ></iframe>
+          )}
         </Dialog>
         <Dialog id="contact">
-          <iframe
-            src="https://edicodesigns.com/connect"
-            title="Contact Form"
-            height="100%"
-            width="100%"
-          ></iframe>
+          {dialogs["contact"]?.isOpen && (
+            <iframe
+              src={sourceURLs.find((x) => x.dialogID === "contact")?.url || ""}
+              loading="lazy"
+              title="Contact Form"
+              height="100%"
+              width="100%"
+            ></iframe>
+          )}
         </Dialog>
         <Dialog id="quote">
-          <iframe
-            src="https://edicodesigns.com/quote"
-            title="Request a Quote"
-            height="100%"
-            width="100%"
-          ></iframe>
+          {dialogs["quote"]?.isOpen && (
+            <iframe
+              src={sourceURLs.find((x) => x.dialogID === "quote")?.url || ""}
+              loading="lazy"
+              title="Request a Quote"
+              height="100%"
+              width="100%"
+            ></iframe>
+          )}
         </Dialog>
         <Dialog id="trash">
           <h2 className="ta-cen invert padding-1">

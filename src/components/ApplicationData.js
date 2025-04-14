@@ -4,14 +4,16 @@ export default function ApplicationData({ theme, ...props }) {
   const { openDialog } = useDialog();
   return [
     {
-      name: "Finder",
+      name: theme === "apple" ? "Finder (Quote)" : "Free Quote",
       classes: null,
       imgSrc:
-        "/assets/icons/apple/application-icons/icon-apple_finder-logo.png",
+        theme === "apple"
+          ? "/assets/icons/apple/application-icons/icon-apple_finder-logo.png"
+          : "assets/icons/microsoft/icon-windows_folder-closed.svg",
       imgClasses: null,
-      handleClick: null,
+      handleClick: () => openDialog("quote"),
       disabled: false,
-      isAppleOnly: true,
+      isAppleOnly: false,
     },
     // {
     //   name: "Preview",
