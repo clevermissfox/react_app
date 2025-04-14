@@ -714,6 +714,9 @@ h3 {
 /* PROJECT SPECIFIC STYLES */
 
 /* MARK: Global */
+footer:has(.taskbar) {
+  outline: 2px solid red;
+}
 
 /* THEMETOGGLE Component */
 .theme-toggle {
