@@ -62,7 +62,7 @@ export default function Dialog({ id, classes, children }) {
           <>
             <button
               type="button"
-              className="grid pi-cen"
+              className="grid pi-cen btn-close apple-btn-close"
               data-btn-close-dialog
               aria-label="Close dialog"
               onClick={() => closeDialog(id)}
@@ -71,7 +71,7 @@ export default function Dialog({ id, classes, children }) {
             </button>
             <button
               type="button"
-              className="grid pi-cen"
+              className="grid pi-cen btn-min apple-btn-min"
               data-btn-minimize-dialog
               aria-label="Minimize dialog"
               onClick={() => minimizeDialog(id)}
@@ -80,7 +80,7 @@ export default function Dialog({ id, classes, children }) {
             </button>
             <button
               type="button"
-              className="grid pi-cen"
+              className="grid pi-cen btn-max apple-btn-max"
               data-btn-maximize-dialog
               aria-label="Maximize dialog"
               onClick={() => maximizeDialog(id)}
@@ -93,7 +93,7 @@ export default function Dialog({ id, classes, children }) {
           <>
             <button
               type="button"
-              className="grid pi-cen"
+              className="grid pi-cen btn-min mic-btn-min"
               data-btn-minimize-dialog
               aria-label="Minimize dialog"
               onClick={() => minimizeDialog(id)}
@@ -102,7 +102,7 @@ export default function Dialog({ id, classes, children }) {
             </button>
             <button
               type="button"
-              className="grid pi-cen"
+              className="grid pi-cen btn-max mic-btn-max"
               data-btn-maximize-dialog
               aria-label="Maximize dialog"
               onClick={() => maximizeDialog(id)}
@@ -111,7 +111,7 @@ export default function Dialog({ id, classes, children }) {
             </button>
             <button
               type="button"
-              className="grid pi-cen"
+              className="grid pi-cen btn-close mic-btn-close"
               data-btn-close-dialog
               aria-label="Close dialog"
               onClick={() => closeDialog(id)}

@@ -917,11 +917,11 @@ ul.date:is(.col) {
 
 /* MAIN Component */
 .main {
-  padding-block: 3em;
-  padding-inline: 1em;
   block-size: calc(100vh - var(--nav-bar-height));
   block-size: calc(100dvh - var(--nav-bar-height));
   overflow: auto;
+  padding-block: 3em;
+  padding-inline: 1em;
 }
 
 /* FILEEXPLORER Component */
@@ -929,7 +929,6 @@ ul.date:is(.col) {
   position: absolute;
   top: 50%;
   left: 50%;
-  /* outline: 2px solid red; */
 }
 
 /* DIALOG Component */
@@ -973,7 +972,7 @@ dialog[open] {
     width: revert;
     height: revert;
 
-    > *:not(.utility-bar) {
+    & > *:not(.utility-bar) {
       height: 0;
       width: 0;
       overflow: hidden;
@@ -1424,15 +1423,11 @@ dialog[open] {
         transition: background-color var(--default-trans-dur);
       }
 
-      &
-        :is(
-          [data-btn-minimize-dialog]:is(:hover, :focus-visible),
-          [data-btn-maximize-dialog]:is(:hover, :focus-visible)
-        ) {
+      & :is(.btn-min, .btn-max):is(:hover, :focus-visible) {
         background-color: var(--clr-mic-neutral-650);
       }
 
-      & :is([data-btn-close-dialog]:is(:hover, :focus-visible)) {
+      & .btn-close:is(:hover, :focus-visible) {
         background-color: var(--clr-mic-dialog-btn-close);
       }
     }
