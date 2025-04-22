@@ -14,19 +14,22 @@ import MicrosoftDesktop from "./MicrosoftComponents/MicrosoftDesktop";
 import ApplicationData from "./ApplicationData";
 import ResumeWrapper from "./ResumeWrapper";
 import { useParams } from "react-router-dom";
+import PortfolioComponent from "./PortfolioComponent";
 
 export default function Main() {
   const { theme } = useContext(ThemeContext);
-  const [portfolioData, setPortfolioData] = useState(null);
+  const [portfolioData, setPortfolioData] = useState({
+    live: [],
+    websites: [],
+  });
+  const [error, setError] = useState(null);
+  const [currentIframeUrl, setCurrentIframeUrl] = useState(null);
   const { dialogs, openDialog } = useDialog();
   const [sourceURLs, setSourceURLs] = useState([]);
   const [isCalendlyScriptLoaded, setIsCalendlyScriptLoaded] = useState(false);
 
   const { dialogId } = useParams();
   // const navigate = useNavigate();
-
-  const [currentIframeUrl, setCurrentIframeUrl] = useState(null);
-  const [error, setError] = useState(null);
 
   // set navbar height for css
   useNavBarHeight();
@@ -92,26 +95,60 @@ export default function Main() {
   // }, []);
 
   // get the portfolio data from supabase
-  const fetchPortfolioData = useCallback(async () => {
-    // setIsLoading(true);
-    setError(null);
+  // const fetchPortfolioData = useCallback(async () => {
+  //   // setIsLoading(true);
+  //   setError(null);
+  //   try {
+  //     const { data, error } = await supabase
+  //       .from("Live-Projects")
+  //       .select("*")
+  //       .order("priority", { ascending: true });
+
+  //     if (error) throw error;
+
+  //     setPortfolioData(data);
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error.message);
+  //     setError(error.message);
+  //   } finally {
+  //     openDialog("portfolio");
+  //     console.log(portfolioData);
+  //   }
+  // }, []);
+
+  const fetchPortfolioData = async () => {
+    const tables = [
+      { key: "live", name: "Live-Projects" },
+      { key: "websites", name: "Websites" },
+    ];
+
+    const results = {};
+    let successCount = 0;
+
     try {
-      const { data, error } = await supabase
-        .from("Live-Projects")
-        .select("*")
-        .order("priority", { ascending: true });
+      for (const { key, name } of tables) {
+        const { data, error } = await supabase
+          .from(name)
+          .select("*")
+          .order("priority", { ascending: true });
+        if (!error && data?.length > 0) {
+          results[key] = data;
+          successCount++;
+        }
+      }
 
-      if (error) throw error;
-
-      setPortfolioData(data);
-    } catch (error) {
-      console.error("Error fetching data:", error.message);
-      setError(error.message);
+      if (successCount === 0) {
+        setError("Failed to load portfolio items.");
+      } else {
+        setError(null);
+        setPortfolioData(results);
+      }
+    } catch (err) {
+      console.error("Error fetching data:", err.message);
     } finally {
       openDialog("portfolio");
-      console.log(portfolioData);
     }
-  }, []);
+  };
 
   // Handle portfolio item click to open dialog and load iframe URL
   function handlePortfolioItemClick(url) {
@@ -150,11 +187,17 @@ export default function Main() {
           </>
         )}
         <Dialog id="portfolio">
-          {(error || !portfolioData) && <p className="error">Error: {error}</p>}
+          <PortfolioComponent
+            portfolioData={portfolioData}
+            error={error}
+            fetchPortfolioData={fetchPortfolioData}
+            handlePortfolioItemClick={handlePortfolioItemClick}
+          />
+          {/* {(error || !portfolioData) && <p className="error">Error: {error}</p>}
           {portfolioData && (
             <div className="portfolio-grid-wrapper">
               <div className="portfolio-grid">
-                {portfolioData.map((data) => (
+                 {portfolioData.map((data) => (
                   <button
                     type="button"
                     onClick={() => handlePortfolioItemClick(data.url)}
@@ -173,16 +216,23 @@ export default function Main() {
                       aria-label={`Open ${data.name} in new window`}
                       title={`Open ${data.name} in new window`}
                     >
-                      {/* <i
-                        className="fas fa-up-right-from-square"
-                        aria-hidden="true"
-                      ></i> */}
+
                     </a>
                   </button>
                 ))}
+                {Object.entries(portfolioData).map(([category, items]) =>
+                  items.map((data) => (
+                    <PortfolioGridItem
+                      key={`${category}-${data.id}`}
+                      data={data}
+                      category={category}
+                      handleClick={handlePortfolioItemClick}
+                    />
+                  ))
+                )}
               </div>
             </div>
-          )}
+          )} */}
         </Dialog>
 
         <Dialog id="portfolio-item">

@@ -1038,6 +1038,24 @@ dialog[open] {
   }
 }
 
+/* PORTFOLIO DIALOG CONTENTS */
+.filter-bar {
+  margin-block-end: 1em;
+}
+.btn-filter {
+  padding-inline: 1em;
+  padding-block: 0.25em;
+  /* line-height: var(--lh-1); */
+  border-radius: 100vw;
+  background-color: var(--clr-bg-body);
+  color: var(--clr-primary);
+  transition: background-color var(--default-trans-dur);
+
+  &:is([aria-selected="true"]) {
+    background-color: var(--clr-brand-accent-2);
+  }
+}
+
 /* PORTFOLIO GRID */
 .portfolio-grid-wrapper {
   background-color: var(--clr-neutral-100);
@@ -1067,6 +1085,10 @@ dialog[open] {
   & img {
     border-radius: inherit;
   }
+}
+
+.portfolio-img-link {
+  height: 0;
 }
 
 .portfolio-img-link::before {
