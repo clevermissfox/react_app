@@ -111,7 +111,7 @@ export default function Main() {
       openDialog("portfolio");
       console.log(portfolioData);
     }
-  }, [openDialog]);
+  }, []);
 
   // Handle portfolio item click to open dialog and load iframe URL
   function handlePortfolioItemClick(url) {

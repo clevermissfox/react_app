@@ -1058,6 +1058,11 @@ dialog[open] {
 .portfolio-img-wrapper {
   position: relative;
   border-radius: var(--br-default);
+  outline: none;
+
+  &:is(:focus-visible) img {
+    outline: -webkit-focus-ring-color auto 1px;
+  }
 
   & img {
     border-radius: inherit;
@@ -1074,6 +1079,11 @@ dialog[open] {
   position: absolute;
   top: 0.5em;
   right: 0.5em;
+}
+
+.portfolio-img-link:is(:hover, :focus-visible)::before {
+  outline: inherit;
+  outline-offset: 2px;
 }
 
 /* RESUME GRID */
