@@ -9,18 +9,17 @@ import Main from "./components/Main";
 export default function App() {
   return (
     <ThemeProvider>
-      {/* <Router> */}
-      <DialogProvider>
-        <div className="App">
-          <NavBar />
-          <Main />
-          {/* <Routes>
+      <Router>
+        <DialogProvider>
+          <div className="App">
+            <NavBar />
+            <Routes>
               <Route Route path="/:dialogId?" element={<Main />} />
-            </Routes> */}
-          <ThemeToggle />
-        </div>
-      </DialogProvider>
-      {/* </Router> */}
+            </Routes>
+            <ThemeToggle />
+          </div>
+        </DialogProvider>
+      </Router>
     </ThemeProvider>
   );
 }

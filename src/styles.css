@@ -1055,6 +1055,27 @@ dialog[open] {
   gap: 1em;
 }
 
+.portfolio-img-wrapper {
+  position: relative;
+  border-radius: var(--br-default);
+
+  & img {
+    border-radius: inherit;
+  }
+}
+
+.portfolio-img-link::before {
+  content: "\f35d";
+  font-family: var(--ff-secondary);
+  padding: 0.5em;
+  background-color: oklch(0% 0 0 / 0.6);
+  backdrop-filter: blur(1em);
+  border-radius: var(--br-default);
+  position: absolute;
+  top: 0.5em;
+  right: 0.5em;
+}
+
 /* RESUME GRID */
 .resume-wrapper {
   display: grid;

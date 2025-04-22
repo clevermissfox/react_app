@@ -13,6 +13,7 @@ import Dialog from "./Dialog";
 import MicrosoftDesktop from "./MicrosoftComponents/MicrosoftDesktop";
 import ApplicationData from "./ApplicationData";
 import ResumeWrapper from "./ResumeWrapper";
+import { useParams } from "react-router-dom";
 
 export default function Main() {
   const { theme } = useContext(ThemeContext);
@@ -21,7 +22,7 @@ export default function Main() {
   const [sourceURLs, setSourceURLs] = useState([]);
   const [isCalendlyScriptLoaded, setIsCalendlyScriptLoaded] = useState(false);
 
-  // const { dialogId } = useParams();
+  const { dialogId } = useParams();
   // const navigate = useNavigate();
 
   const [currentIframeUrl, setCurrentIframeUrl] = useState(null);
@@ -77,7 +78,7 @@ export default function Main() {
         setIsCalendlyScriptLoaded(false);
       };
     }
-  }, [dialogs["calendar"]?.isOpen]);
+  }, [dialogs["calendar"]?.isOpen, dialogs, isCalendlyScriptLoaded]);
 
   // useEffect(() => {
   //   const script = document.createElement("script");
@@ -108,6 +109,7 @@ export default function Main() {
       setError(error.message);
     } finally {
       openDialog("portfolio");
+      console.log(portfolioData);
     }
   }, [openDialog]);
 
@@ -129,15 +131,15 @@ export default function Main() {
 
   const appIcons = ApplicationData({ theme, fetchPortfolioData });
 
-  // useEffect(() => {
-  //   if (dialogId && dialogs[dialogId] && dialogs[dialogId].isOpen === false) {
-  //     openDialog(dialogId);
-  //     if (dialogId === "portfolio") {
-  //       // Check if it's the portfolio dialog
-  //       fetchPortfolioData();
-  //     }
-  //   }
-  // }, [dialogId, dialogs, openDialog, portfolioData]);
+  useEffect(() => {
+    if (dialogId) {
+      openDialog(dialogId);
+      if (dialogId === "portfolio") {
+        // Check if it's the portfolio dialog
+        fetchPortfolioData();
+      }
+    }
+  }, [dialogId]);
 
   return (
     <>
@@ -162,6 +164,20 @@ export default function Main() {
                   >
                     <h2 className="visually-hidden">{data.name}</h2>
                     <img src={data.imgUrl} alt={data.name} />
+                    <a
+                      href={data.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="portfolio-img-link"
+                      onClick={(e) => e.stopPropagation()}
+                      aria-label={`Open ${data.name} in new window`}
+                      title={`Open ${data.name} in new window`}
+                    >
+                      {/* <i
+                        className="fas fa-up-right-from-square"
+                        aria-hidden="true"
+                      ></i> */}
+                    </a>
                   </button>
                 ))}
               </div>
