@@ -1,5 +1,5 @@
-import { useContext, useState, useEffect, useCallback } from "react";
-// import { useParams, useNavigate } from "react-router-dom";
+import { useContext, useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 
 import ThemeContext from "../context/ThemeContext";
 import { useDialog } from "../context/DialogContext";
@@ -13,7 +13,6 @@ import Dialog from "./Dialog";
 import MicrosoftDesktop from "./MicrosoftComponents/MicrosoftDesktop";
 import ApplicationData from "./ApplicationData";
 import ResumeWrapper from "./ResumeWrapper";
-import { useParams } from "react-router-dom";
 import PortfolioComponent from "./PortfolioComponent";
 
 export default function Main() {
@@ -171,6 +170,7 @@ export default function Main() {
   useEffect(() => {
     if (dialogId) {
       openDialog(dialogId);
+      console.log(dialogId);
       if (dialogId === "portfolio") {
         // Check if it's the portfolio dialog
         fetchPortfolioData();
@@ -190,7 +190,6 @@ export default function Main() {
           <PortfolioComponent
             portfolioData={portfolioData}
             error={error}
-            fetchPortfolioData={fetchPortfolioData}
             handlePortfolioItemClick={handlePortfolioItemClick}
           />
           {/* {(error || !portfolioData) && <p className="error">Error: {error}</p>}

@@ -1088,7 +1088,9 @@ dialog[open] {
 }
 
 .portfolio-img-link {
-  height: 0;
+  position: absolute;
+  top: 0.5em;
+  right: 0.5em;
 }
 
 .portfolio-img-link::before {

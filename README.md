@@ -11,9 +11,10 @@ This project was created with React, Firebase, and Supabase; Its still in progre
 - Address the theme toggle zindex when Dialogs are open vs maximized✅
 - Add more portfolio items and the option to toggle between 'live projects', websites / videos , graphics etc.
 - add onto the skills to make it more of a resume
+- routing to be able to link
 - look at the navbar height/taksbar offset custom properties and figure out why they are still wonky.
 - Drag the dialogs?
-- Ensure the most recently opened dialog has the highest zindex; when they are minimized they shouldnt go on top of each other;
+- Ensure the most recently opened dialog has the highest zindex; when they are minimized they shouldnt go on top of each other; ✅
 - address the height styling: on apple, if natural size (not maximized) it should be between the navbar and the taskbar, on microsoft, should be above the navbar.✅
 
 ## Disclaimer: This will not have all the functionality as a desktop computer; It is just a fun interface and hopefully an interesting UX but is an emulation not an exact replica

@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import PortfolioGridItem from "./PortfolioGridItem";
 
 export default function PortfolioComponent({
-  fetchPortfolioData,
   portfolioData,
   handlePortfolioItemClick,
   error,
@@ -11,10 +10,7 @@ export default function PortfolioComponent({
     "all portfolio projects"
   );
   const categories = ["all portfolio projects", ...Object.keys(portfolioData)];
-
-  useEffect(() => {
-    fetchPortfolioData();
-  }, []);
+  console.log(portfolioData);
 
   return (
     <>
@@ -34,7 +30,7 @@ export default function PortfolioComponent({
                 className="btn btn-filter"
                 onClick={() => setActiveCategory(category)}
               >
-                {category}
+                {category === "live" ? "coded projects" : category}
               </button>
             ))}
           </div>
@@ -57,18 +53,6 @@ export default function PortfolioComponent({
                   ))
                 )}
             </div>
-            {/* <div className="portfolio-grid">
-              {Object.entries(portfolioData).map(([category, items]) =>
-                items.map((data) => (
-                  <PortfolioGridItem
-                    key={`${category}-${data.id}`}
-                    data={data}
-                    category={category}
-                    handleClick={handlePortfolioItemClick}
-                  />
-                ))
-              )}
-            </div> */}
           </div>
         </>
       )}

@@ -85,6 +85,16 @@ export default function NavBar() {
             <li className="start-menu-context-item">
               <button
                 onClick={() => {
+                  openDialog("portfolio");
+                  closePopover();
+                }}
+              >
+                View Portfolio
+              </button>
+            </li>
+            <li className="start-menu-context-item">
+              <button
+                onClick={() => {
                   openDialog("quote");
                   closePopover();
                 }}
