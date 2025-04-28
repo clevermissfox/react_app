@@ -10,7 +10,6 @@ export default function PortfolioComponent({
     "all portfolio projects"
   );
   const categories = ["all portfolio projects", ...Object.keys(portfolioData)];
-  console.log(portfolioData);
 
   return (
     <>
