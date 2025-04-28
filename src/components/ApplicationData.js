@@ -9,7 +9,7 @@ export default function ApplicationData({ theme, ...props }) {
       imgSrc:
         theme === "apple"
           ? "/assets/icons/apple/application-icons/icon-apple_finder-logo.png"
-          : "assets/icons/microsoft/icon-windows_folder-closed.svg",
+          : "assets/icons/microsoft/icon-windows_folder-open.svg",
       imgClasses: null,
       handleClick: () => openDialog("quote"),
       disabled: false,
