@@ -11,13 +11,10 @@ export default function App() {
     <ThemeProvider>
       <Router>
         <DialogProvider>
-          <div className="App">
-            <NavBar />
-            <Routes>
-              <Route Route path="/:dialogId?" element={<Main />} />
-            </Routes>
-            <ThemeToggle />
-          </div>
+          <Routes>
+            <Route Route path="/:dialogId?" element={<Main />} />
+          </Routes>
+          <ThemeToggle />
         </DialogProvider>
       </Router>
     </ThemeProvider>

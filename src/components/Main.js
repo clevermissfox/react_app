@@ -14,6 +14,7 @@ import MicrosoftDesktop from "./MicrosoftComponents/MicrosoftDesktop";
 import ApplicationData from "./ApplicationData";
 import ResumeWrapper from "./ResumeWrapper";
 import PortfolioComponent from "./PortfolioComponent";
+import NavBar from "./NavBar";
 
 export default function Main() {
   const { theme } = useContext(ThemeContext);
@@ -151,12 +152,14 @@ export default function Main() {
 
   // Handle portfolio item click to open dialog and load iframe URL
   function handlePortfolioItemClick(url) {
-    setCurrentIframeUrl(url); // Set iframe URL dynamically
-    if (dialogs["portfolio-item"]) {
-      openDialog("portfolio-item"); // Open portfolio dialog via context
+    setCurrentIframeUrl(url);
+    const dialog = dialogs["portfolio-item"];
+    if (!dialog?.isOpen) {
+      openDialog("portfolio-item");
+    } else if (dialog.isMinimized) {
+      toggleMinimizeDialog("portfolio-item");
     }
   }
-
   const isPortfolioDialogOpen = dialogs["portfolio-item"]?.isOpen || false;
 
   useEffect(() => {
@@ -180,19 +183,22 @@ export default function Main() {
 
   return (
     <>
-      <main className="main">
-        {theme === "microsoft" && (
-          <>
-            <MicrosoftDesktop appIcons={appIcons} />
-          </>
-        )}
-        <Dialog id="portfolio">
-          <PortfolioComponent
-            portfolioData={portfolioData}
-            error={error}
-            handlePortfolioItemClick={handlePortfolioItemClick}
-          />
-          {/* {(error || !portfolioData) && <p className="error">Error: {error}</p>}
+      <div className="App">
+        <NavBar appIcons={appIcons} fetchPortfolioData={fetchPortfolioData} />
+
+        <main className="main">
+          {theme === "microsoft" && (
+            <>
+              <MicrosoftDesktop appIcons={appIcons} />
+            </>
+          )}
+          <Dialog id="portfolio">
+            <PortfolioComponent
+              portfolioData={portfolioData}
+              error={error}
+              handlePortfolioItemClick={handlePortfolioItemClick}
+            />
+            {/* {(error || !portfolioData) && <p className="error">Error: {error}</p>}
           {portfolioData && (
             <div className="portfolio-grid-wrapper">
               <div className="portfolio-grid">
@@ -232,83 +238,88 @@ export default function Main() {
               </div>
             </div>
           )} */}
-        </Dialog>
+          </Dialog>
 
-        <Dialog id="portfolio-item">
-          {dialogs["portfolio-item"]?.isOpen && (
-            <iframe
-              src={
-                sourceURLs.find((x) => x.dialogID === "portfolio-item")?.url ||
-                currentIframeUrl
+          <Dialog id="portfolio-item">
+            {dialogs["portfolio-item"]?.isOpen && (
+              <iframe
+                src={
+                  sourceURLs.find((x) => x.dialogID === "portfolio-item")
+                    ?.url || currentIframeUrl
+                }
+                loading="lazy"
+                title="Portfolio Item"
+                height="100%"
+                width="100%"
+              ></iframe>
+            )}
+          </Dialog>
+
+          <Dialog id="calendar" classes="dialog-cal">
+            <div
+              className="calendly-inline-widget"
+              data-url={
+                dialogs["calendar"]?.isOpen // Set data-url only if the dialog is open
+                  ? sourceURLs.find((x) => x.dialogID === "calendar")?.url || ""
+                  : null // Null for data-url when the dialog is closed
               }
-              loading="lazy"
-              title="Portfolio Item"
-              height="100%"
-              width="100%"
-            ></iframe>
-          )}
-        </Dialog>
+              style={{ minWidth: "320px", height: "100%" }}
+            ></div>
+          </Dialog>
+          <Dialog id="resume">
+            <ResumeWrapper />
+          </Dialog>
 
-        <Dialog id="calendar" classes="dialog-cal">
-          <div
-            className="calendly-inline-widget"
-            data-url={
-              dialogs["calendar"]?.isOpen // Set data-url only if the dialog is open
-                ? sourceURLs.find((x) => x.dialogID === "calendar")?.url || ""
-                : null // Null for data-url when the dialog is closed
-            }
-            style={{ minWidth: "320px", height: "100%" }}
-          ></div>
-        </Dialog>
-        <Dialog id="resume">
-          <ResumeWrapper />
-        </Dialog>
+          <Dialog id="browser">
+            {dialogs["browser"]?.isOpen && (
+              <iframe
+                src={
+                  sourceURLs.find((x) => x.dialogID === "browser")?.url || ""
+                }
+                loading="lazy"
+                title="Browser"
+                height="100%"
+                width="100%"
+              ></iframe>
+            )}
+          </Dialog>
+          <Dialog id="contact">
+            {dialogs["contact"]?.isOpen && (
+              <iframe
+                src={
+                  sourceURLs.find((x) => x.dialogID === "contact")?.url || ""
+                }
+                loading="lazy"
+                title="Contact Form"
+                height="100%"
+                width="100%"
+              ></iframe>
+            )}
+          </Dialog>
+          <Dialog id="quote">
+            {dialogs["quote"]?.isOpen && (
+              <iframe
+                src={sourceURLs.find((x) => x.dialogID === "quote")?.url || ""}
+                loading="lazy"
+                title="Request a Quote"
+                height="100%"
+                width="100%"
+              ></iframe>
+            )}
+          </Dialog>
+          <Dialog id="trash">
+            <h2 className="ta-cen invert padding-1">
+              The trash button is just for decoration 🗑️
+            </h2>
+          </Dialog>
+        </main>
 
-        <Dialog id="browser">
-          {dialogs["browser"]?.isOpen && (
-            <iframe
-              src={sourceURLs.find((x) => x.dialogID === "browser")?.url || ""}
-              loading="lazy"
-              title="Browser"
-              height="100%"
-              width="100%"
-            ></iframe>
-          )}
-        </Dialog>
-        <Dialog id="contact">
-          {dialogs["contact"]?.isOpen && (
-            <iframe
-              src={sourceURLs.find((x) => x.dialogID === "contact")?.url || ""}
-              loading="lazy"
-              title="Contact Form"
-              height="100%"
-              width="100%"
-            ></iframe>
-          )}
-        </Dialog>
-        <Dialog id="quote">
-          {dialogs["quote"]?.isOpen && (
-            <iframe
-              src={sourceURLs.find((x) => x.dialogID === "quote")?.url || ""}
-              loading="lazy"
-              title="Request a Quote"
-              height="100%"
-              width="100%"
-            ></iframe>
-          )}
-        </Dialog>
-        <Dialog id="trash">
-          <h2 className="ta-cen invert padding-1">
-            The trash button is just for decoration 🗑️
-          </h2>
-        </Dialog>
-      </main>
-
-      {theme === "apple" && (
-        <footer className="footer">
-          <AppleTaskbar appIcons={appIcons} />{" "}
-        </footer>
-      )}
+        {theme === "apple" && (
+          <footer className="footer">
+            <AppleTaskbar appIcons={appIcons} />{" "}
+          </footer>
+        )}
+      </div>
     </>
   );
 }

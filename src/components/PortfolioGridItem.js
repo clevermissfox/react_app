@@ -1,4 +1,7 @@
+import { useState } from "react";
+
 export default function PortfolioGridItem({ data, category, handleClick }) {
+  const [imageLoaded, setImageLoaded] = useState(false);
   const isLive = category === "live";
   const isWebsiteWithLiveUrl = category === "websites" && data.liveUrl;
   const sourceURL = isLive ? data.url : data.videoUrl;
@@ -13,9 +16,13 @@ export default function PortfolioGridItem({ data, category, handleClick }) {
       className="portfolio-img-wrapper"
     >
       <h2 className="visually-hidden">{data.name}</h2>
-      <img src={data.imgUrl} alt={data.name} />
+      <img
+        src={data.imgUrl}
+        alt={data.name}
+        onLoad={() => setImageLoaded(true)}
+      />
 
-      {shouldRenderLink && (
+      {shouldRenderLink && imageLoaded && (
         <a
           href={linkHref}
           target="_blank"

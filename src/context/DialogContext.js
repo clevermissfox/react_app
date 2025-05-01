@@ -60,8 +60,23 @@ export const DialogProvider = ({ children }) => {
   const minimizeDialog = (id) => {
     setDialogs((prev) => ({
       ...prev,
-      [id]: { ...prev[id], isMinimized: true, isMaximized: false },
+      [id]: { ...prev[id], isMinimized: true },
     }));
+  };
+
+  const toggleMinimizeDialog = (id) => {
+    setDialogs((prev) => {
+      const dialog = prev[id];
+      // Only toggle if dialog is open
+      if (!dialog?.isOpen) return prev;
+      return {
+        ...prev,
+        [id]: {
+          ...dialog,
+          isMinimized: !dialog.isMinimized,
+        },
+      };
+    });
   };
 
   const maximizeDialog = (id) => {
@@ -109,6 +124,7 @@ export const DialogProvider = ({ children }) => {
         openDialog,
         closeDialog,
         minimizeDialog,
+        toggleMinimizeDialog,
         maximizeDialog,
       }}
     >
