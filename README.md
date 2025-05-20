@@ -21,7 +21,11 @@ This project was created with React, Firebase, and Supabase; Its still in progre
 
 # Updating github Actions
 
-- Navigate to settings > Environments and Secrets
+- On GitHub, navigate to settings > Environments and Secrets
 - for the secret SSH_PRIVATE_KEY, log in via ssh and use cmd cat ~/.ssh/id_rsa
 - copy the entire conents including “-----BEGIN OPENSSH PRIVATE KEY----- “and "-----END OPENSSH PRIVATE KEY-----"
 - paste it into gh SSH_PRIVATE_KEY value
+
+# Testing Deployment
+
+- Pushing changes!

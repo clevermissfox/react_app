@@ -8,6 +8,7 @@
 }
 
 :root {
+  --is_keychain_token_working: true;
   /* FONT SIZES */
   font-family: var(--ff-primary);
   font-weight: var(--fw-body);
