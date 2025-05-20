@@ -24,7 +24,7 @@ export default function Main() {
   });
   const [error, setError] = useState(null);
   const [currentIframeUrl, setCurrentIframeUrl] = useState(null);
-  const { dialogs, openDialog } = useDialog();
+  const { dialogs, openDialog, toggleMinimizeDialog } = useDialog();
   const [sourceURLs, setSourceURLs] = useState([]);
   const [isCalendlyScriptLoaded, setIsCalendlyScriptLoaded] = useState(false);
 
