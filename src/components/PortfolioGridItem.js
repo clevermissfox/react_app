@@ -4,6 +4,7 @@ export default function PortfolioGridItem({ data, category, handleClick }) {
   const [imageLoaded, setImageLoaded] = useState(false);
   const isLive = category === "live";
   const isWebsiteWithLiveUrl = category === "websites" && data.liveUrl;
+  const isGraphics = category === "graphics";
   const sourceURL = isLive ? data.url : data.videoUrl;
   const shouldRenderLink = isLive || isWebsiteWithLiveUrl;
   const linkHref = isLive ? data.url : data.liveUrl;

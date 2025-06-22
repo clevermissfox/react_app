@@ -21,6 +21,7 @@ export default function Main() {
   const [portfolioData, setPortfolioData] = useState({
     live: [],
     websites: [],
+    // graphics: [], // Uncomment if you have graphics data; will have to handle the handlePortfolioItemClick function since it doesnt have an iframe to load
   });
   const [error, setError] = useState(null);
   const [currentIframeUrl, setCurrentIframeUrl] = useState(null);
@@ -57,7 +58,7 @@ export default function Main() {
       },
       {
         dialogID: "calendar",
-        url: "https://calendly.com/edicodesigner/freeconsultation?hide_event_type_details=1&background_color=000&text_color=ffffff&primary_color=a588ca",
+        url: "https://calendly.com/edicodesigns/freeconsultation?hide_event_type_details=1&background_color=000&text_color=ffffff&primary_color=a588ca",
       },
     ]);
   }, [currentIframeUrl]);
@@ -118,19 +119,26 @@ export default function Main() {
 
   const fetchPortfolioData = async () => {
     const tables = [
-      { key: "live", name: "Live-Projects" },
-      { key: "websites", name: "Websites" },
+      { key: "live", name: "Live-Projects", hasInactive: true },
+      { key: "websites", name: "Websites", hasInactive: false },
+      // { key: "graphics", name: "Graphics", hasInactive: false }, // uncomment if you have graphics data
     ];
 
     const results = {};
     let successCount = 0;
 
     try {
-      for (const { key, name } of tables) {
-        const { data, error } = await supabase
-          .from(name)
-          .select("*")
-          .order("priority", { ascending: true });
+      for (const { key, name, hasInactive } of tables) {
+        let query = supabase.from(name).select("*");
+
+        if (hasInactive) {
+          query = query.eq("inactive", false);
+        }
+
+        query = query.order("priority", { ascending: true });
+
+        const { data, error } = await query;
+
         if (!error && data?.length > 0) {
           results[key] = data;
           successCount++;
