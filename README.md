@@ -25,7 +25,3 @@ This project was created with React, Firebase, and Supabase; Its still in progre
 - for the secret SSH_PRIVATE_KEY, log in via ssh and use cmd cat ~/.ssh/id_rsa
 - copy the entire conents including “-----BEGIN OPENSSH PRIVATE KEY----- “and "-----END OPENSSH PRIVATE KEY-----"
 - paste it into gh SSH_PRIVATE_KEY value
-
-# Testing Deployment
-
-- Pushing changes!
