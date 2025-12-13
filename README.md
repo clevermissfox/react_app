@@ -5,11 +5,11 @@ This project was created with React, Firebase, and Supabase; Its still in progre
 - Portfolio images that open an iFrame to their live codepen ✅
 - Downloadable resume✅
 - Booking Calendar ✅
-- 'Email' client for contact form✅
+- 'Email' client for contact form ✅
 - For mobile screen sizes, toggle between Android oS and iOS
 - Ability to open multiple file explorers at the same time ✅
 - Address the theme toggle zindex when Dialogs are open vs maximized✅
-- Add more portfolio items and the option to toggle between 'live projects', websites / videos , graphics etc.
+- Add more portfolio items and the option to toggle between 'live projects', websites / videos , graphics etc. ✅
 - add onto the skills to make it more of a resume
 - routing to be able to link
 - look at the navbar height/taksbar offset custom properties and figure out why they are still wonky.
