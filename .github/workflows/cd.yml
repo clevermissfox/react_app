@@ -16,6 +16,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            set -e
             cd /home/admin/projects/react_app
             git fetch --all
             git reset --hard origin/main
