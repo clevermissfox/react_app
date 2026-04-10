@@ -32,7 +32,12 @@ export default function PortfolioGridItem({ data, category, handleClick }) {
           onClick={(e) => e.stopPropagation()}
           aria-label={`Open ${data.name} in new window`}
           title={`Open ${data.name} in new window`}
-        />
+        >
+          <i
+            aria-hidden="true"
+            className="fas fa-arrow-up-right-from-square"
+          ></i>
+        </a>
       )}
     </button>
   );

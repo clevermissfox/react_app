@@ -1,5 +1,4 @@
 /* SETUP and RESET */
-@import "lucide-static/font/lucide.css";
 @font-face {
   font-family: "SF Pro";
   src:
@@ -119,6 +118,7 @@ html[data-theme="microsoft"] {
   padding: 0;
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
+  outline-color: var(--clr-accent, -webkit-tap-highlight-color);
 }
 
 img,
@@ -1101,23 +1101,16 @@ dialog[open] {
   position: absolute;
   top: 0.5em;
   right: 0.5em;
-}
-
-.portfolio-img-link::before {
-  content: "\eb76";
-  font-family: "Lucide";
   padding: 0.5em;
   background-color: oklch(0% 0 0 / 0.6);
   backdrop-filter: blur(1em);
   border-radius: var(--br-default);
-  position: absolute;
-  top: 0.5em;
-  right: 0.5em;
+  font-size: 0.85em;
 }
 
-.portfolio-img-link:is(:hover, :focus-visible)::before {
-  outline: inherit;
-  outline-offset: 2px;
+.portfolio-img-link:is(:hover, :focus-visible) {
+  outline: 0.1em solid var(--clr-accent, -webkit-tap-highlight-color);
+  outline-offset: 0.1em;
 }
 
 /* RESUME GRID */
