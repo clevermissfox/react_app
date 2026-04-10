@@ -1086,11 +1086,11 @@ dialog[open] {
 .portfolio-img-wrapper {
   position: relative;
   border-radius: var(--br-default);
-  outline: none;
+  /* outline: none;
 
   &:is(:focus-visible) img {
     outline: -webkit-focus-ring-color auto 1px;
-  }
+  } */
 
   & img {
     border-radius: inherit;
