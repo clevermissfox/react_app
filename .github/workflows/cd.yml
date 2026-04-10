@@ -17,7 +17,8 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /home/admin/projects/react_app
-            git pull origin main
+            git fetch --all
+            git reset --hard origin/main
             export NVM_DIR="$HOME/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
             /home/admin/.nvm/versions/node/v23.3.0/bin/npm install
