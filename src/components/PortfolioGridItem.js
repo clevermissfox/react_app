@@ -2,34 +2,33 @@ import { useState } from "react";
 
 export default function PortfolioGridItem({ data, category, handleClick }) {
   const [imageLoaded, setImageLoaded] = useState(false);
-  const isLive = category === "live";
-  const isWebsiteWithLiveUrl = category === "websites" && data.liveUrl;
-  const isGraphics = category === "graphics";
-  const sourceURL = isLive ? data.url : data.videoUrl;
-  const shouldRenderLink = isLive || isWebsiteWithLiveUrl;
-  const linkHref = isLive ? data.url : data.liveUrl;
+
+  const isGraphic = category === "graphic";
+  const linkHref = data.external_url || null;
+  const shouldRenderLink = Boolean(linkHref) && !isGraphic;
 
   return (
-    <button
-      type="button"
-      onClick={() => handleClick(sourceURL)}
-      data-id={`${category}-${data.id}`}
-      className="portfolio-img-wrapper"
-    >
-      <h2 className="visually-hidden">{data.name}</h2>
-      <img
-        src={data.imgUrl}
-        alt={data.name}
-        onLoad={() => setImageLoaded(true)}
-      />
+    <div className="portfolio-img-wrapper" data-id={`${category}-${data.id}`}>
+      <button
+        type="button"
+        onClick={() => handleClick(data)}
+        className="portfolio-img-button"
+        aria-label={`Open ${data.name}`}
+      >
+        <h2 className="visually-hidden">{data.name}</h2>
+        <img
+          src={data.thumbnail_url}
+          alt={data.name}
+          onLoad={() => setImageLoaded(true)}
+        />
+      </button>
 
       {shouldRenderLink && imageLoaded && (
         <a
           href={linkHref}
           target="_blank"
-          rel="noreferrer"
+          rel="noopener noreferrer"
           className="portfolio-img-link"
-          onClick={(e) => e.stopPropagation()}
           aria-label={`Open ${data.name} in new window`}
           title={`Open ${data.name} in new window`}
         >
@@ -39,6 +38,6 @@ export default function PortfolioGridItem({ data, category, handleClick }) {
           ></i>
         </a>
       )}
-    </button>
+    </div>
   );
 }

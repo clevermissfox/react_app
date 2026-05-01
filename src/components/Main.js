@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 
 import ThemeContext from "../context/ThemeContext";
@@ -18,12 +18,15 @@ import NavBar from "./NavBar";
 
 export default function Main() {
   const { theme } = useContext(ThemeContext);
-  const [portfolioData, setPortfolioData] = useState({
-    live: [],
-    websites: [],
-    // graphics: [], // Uncomment if you have graphics data; will have to handle the handlePortfolioItemClick function since it doesnt have an iframe to load
-  });
+  // LEGACY STATE STRUCTURE FOR MULTIPLE TABLES. NOW USING A SINGLE VIEW IN SUPABASE TO PULL ALL PORTFOLIO DATA.
+  // const [portfolioData, setPortfolioData] = useState({
+  //   live: [],
+  //   websites: [],
+  //   // graphics: [], // Uncomment if you have graphics data; will have to handle the handlePortfolioItemClick function since it doesnt have an iframe to load
+  // });
+  const [portfolioData, setPortfolioData] = useState([]);
   const [error, setError] = useState(null);
+  const [currentPortfolioItem, setCurrentPortfolioItem] = useState(null);
   const [currentIframeUrl, setCurrentIframeUrl] = useState(null);
   const { dialogs, openDialog, toggleMinimizeDialog } = useDialog();
   const [sourceURLs, setSourceURLs] = useState([]);
@@ -40,10 +43,11 @@ export default function Main() {
   useEffect(() => {
     // Initialize source URLs for dialogs
     setSourceURLs([
-      {
-        dialogID: "portfolio-item",
-        url: currentIframeUrl || "",
-      },
+      // LEGACY PORTFOLIO ITEM IFRAME HANDLING.
+      // {
+      //   dialogID: "portfolio-item",
+      //   url: currentIframeUrl || "",
+      // },
       {
         dialogID: "contact",
         url: "https://edicodesigns.com/connect",
@@ -96,71 +100,104 @@ export default function Main() {
   // }, []);
 
   // get the portfolio data from supabase
-  // const fetchPortfolioData = useCallback(async () => {
-  //   // setIsLoading(true);
-  //   setError(null);
-  //   try {
-  //     const { data, error } = await supabase
-  //       .from("Live-Projects")
-  //       .select("*")
-  //       .order("priority", { ascending: true });
-
-  //     if (error) throw error;
-
-  //     setPortfolioData(data);
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error.message);
-  //     setError(error.message);
-  //   } finally {
-  //     openDialog("portfolio");
-  //     console.log(portfolioData);
-  //   }
-  // }, []);
-
-  const fetchPortfolioData = async () => {
-    const tables = [
-      { key: "live", name: "Live-Projects", hasInactive: true },
-      { key: "websites", name: "Websites", hasInactive: false },
-      // { key: "graphics", name: "Graphics", hasInactive: false }, // uncomment if you have graphics data
-    ];
-
-    const results = {};
-    let successCount = 0;
-
+  const fetchPortfolioData = useCallback(async () => {
+    // setIsLoading(true);
+    setError(null);
     try {
-      for (const { key, name, hasInactive } of tables) {
-        let query = supabase.from(name).select("*");
+      const { data, error } = await supabase
+        .from("portfolio_items")
+        .select("*")
+        .eq("inactive", false)
+        .order("priority", { ascending: true, nullsFirst: false })
+        .order("created_at", { ascending: false });
 
-        if (hasInactive) {
-          query = query.eq("inactive", false);
-        }
-
-        query = query.order("priority", { ascending: true });
-
-        const { data, error } = await query;
-
-        if (!error && data?.length > 0) {
-          results[key] = data;
-          successCount++;
-        }
-      }
-
-      if (successCount === 0) {
+      if (error) {
         setError("Failed to load portfolio items.");
-      } else {
-        setError(null);
-        setPortfolioData(results);
+        console.error("Error fetching portfolio items:", error.message);
+        return;
       }
-    } catch (err) {
-      console.error("Error fetching data:", err.message);
+      console.log("portfolio_items:", data);
+      setPortfolioData(data ?? []);
+    } catch (error) {
+      console.error("Error fetching data:", error.message);
+      setError(error.message);
     } finally {
       openDialog("portfolio");
     }
-  };
+  }, []);
 
-  // Handle portfolio item click to open dialog and load iframe URL
-  function handlePortfolioItemClick(url) {
-    setCurrentIframeUrl(url);
+  // START LEGACY FUNCTION USING INDIVIDUAL TABLES FROM SUPABASE. NOW USING A SINGLE VIEW PULLING FROM ALL TABLES.
+  // const fetchPortfolioData = async () => {
+  //   const tables = [
+  //     { key: "live", name: "Live-Projects", hasInactive: true },
+  //     { key: "websites", name: "Websites", hasInactive: false },
+  //     // { key: "graphics", name: "Graphics", hasInactive: false }, // uncomment if you have graphics data
+  //   ];
+
+  //   const results = {};
+  //   let successCount = 0;
+
+  //   try {
+  //     for (const { key, name, hasInactive } of tables) {
+  //       let query = supabase.from(name).select("*");
+
+  //       if (hasInactive) {
+  //         query = query.eq("inactive", false);
+  //       }
+
+  //       query = query.order("priority", { ascending: true });
+
+  //       const { data, error } = await query;
+
+  //       if (!error && data?.length > 0) {
+  //         results[key] = data;
+  //         successCount++;
+  //       }
+  //     }
+
+  //     if (successCount === 0) {
+  //       setError("Failed to load portfolio items.");
+  //     } else {
+  //       setError(null);
+  //       setPortfolioData(results);
+  //     }
+  //   } catch (err) {
+  //     console.error("Error fetching data:", err.message);
+  //   } finally {
+  //     openDialog("portfolio");
+  //   }
+  // };
+
+  // LEGACY BEFORE SUPABASE VIEW STRUCTURE Handle portfolio item click to open dialog and load iframe URL
+  // function handlePortfolioItemClick(url) {
+  //   setCurrentIframeUrl(url);
+  //   const dialog = dialogs["portfolio-item"];
+  //   if (!dialog?.isOpen) {
+  //     openDialog("portfolio-item");
+  //   } else if (dialog.isMinimized) {
+  //     toggleMinimizeDialog("portfolio-item");
+  //   }
+  // }
+
+  // const isPortfolioDialogOpen = dialogs["portfolio-item"]?.isOpen || false;
+
+  // useEffect(() => {
+  //   if (!isPortfolioDialogOpen) {
+  //     setCurrentIframeUrl(null); // Reset iframe URL when portfolio dialog closes
+  //   }
+  // }, [isPortfolioDialogOpen]); // Simplified dependency array
+
+  // END LEGACY BEFORE SUPABASE VIEW - HANDLE PORTFOLIO ITEM CLICK.
+
+  function handlePortfolioItemClick(item) {
+    setCurrentPortfolioItem(item);
+
+    if (item.category !== "graphic") {
+      setCurrentIframeUrl(item.iframe_url || null);
+    } else {
+      setCurrentIframeUrl(null);
+    }
+
     const dialog = dialogs["portfolio-item"];
     if (!dialog?.isOpen) {
       openDialog("portfolio-item");
@@ -168,13 +205,15 @@ export default function Main() {
       toggleMinimizeDialog("portfolio-item");
     }
   }
+
   const isPortfolioDialogOpen = dialogs["portfolio-item"]?.isOpen || false;
 
   useEffect(() => {
     if (!isPortfolioDialogOpen) {
-      setCurrentIframeUrl(null); // Reset iframe URL when portfolio dialog closes
+      setCurrentIframeUrl(null);
+      setCurrentPortfolioItem(null);
     }
-  }, [isPortfolioDialogOpen]); // Simplified dependency array
+  }, [isPortfolioDialogOpen]);
 
   const appIcons = ApplicationData({ theme, fetchPortfolioData });
 
@@ -206,7 +245,15 @@ export default function Main() {
               error={error}
               handlePortfolioItemClick={handlePortfolioItemClick}
             />
-            {/* {(error || !portfolioData) && <p className="error">Error: {error}</p>}
+          </Dialog>
+          {/* START LEGACY PORTFOLIO DIALOG CODE. NOW USING PORTFOLIO COMPONENT WITH A SINGLE VIEW IN SUPABASE TO PULL ALL DATA AND CATEGORIES. */}
+          {/* <Dialog id="portfolio">
+            <PortfolioComponent
+              portfolioData={portfolioData}
+              error={error}
+              handlePortfolioItemClick={handlePortfolioItemClick}
+            /> */}
+          {/* {(error || !portfolioData) && <p className="error">Error: {error}</p>}
           {portfolioData && (
             <div className="portfolio-grid-wrapper">
               <div className="portfolio-grid">
@@ -246,9 +293,9 @@ export default function Main() {
               </div>
             </div>
           )} */}
-          </Dialog>
+          {/* </Dialog> */}
 
-          <Dialog id="portfolio-item">
+          {/* <Dialog id="portfolio-item">
             {dialogs["portfolio-item"]?.isOpen && (
               <iframe
                 src={
@@ -261,6 +308,29 @@ export default function Main() {
                 width="100%"
               ></iframe>
             )}
+          </Dialog> */}
+          {/* END LEGACY PORTFOLIO DIALOG CODE. NOW USING PORTFOLIO COMPONENT WITH A SINGLE VIEW IN SUPABASE TO PULL ALL DATA AND CATEGORIES. */}
+
+          <Dialog id="portfolio-item">
+            {dialogs["portfolio-item"]?.isOpen &&
+              currentPortfolioItem &&
+              (currentPortfolioItem.category === "graphic" ? (
+                <div className="portfolio-preview-image-wrapper">
+                  <img
+                    src={currentPortfolioItem.thumbnail_url}
+                    alt={currentPortfolioItem.name}
+                    className="portfolio-preview-image"
+                  />
+                </div>
+              ) : currentPortfolioItem.iframe_url ? (
+                <iframe
+                  src={currentPortfolioItem.iframe_url}
+                  loading="lazy"
+                  title={currentPortfolioItem.name || "Portfolio Item"}
+                  height="100%"
+                  width="100%"
+                ></iframe>
+              ) : null)}
           </Dialog>
 
           <Dialog id="calendar" classes="dialog-cal">

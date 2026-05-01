@@ -956,7 +956,7 @@ dialog[open] {
   height: 100dvh;
   width: min(100% - 2rem, 100ch);
   inset-block: var(--_pos-block);
-  border-color: color-mix(in oklch, currentColor, transparent 70%);
+  border-color: color-mix(in oklch, currentColor, transparent 90%);
   border-radius: var(--br-default);
   overflow: hidden;
   transition: all var(--default-trans-dur);
@@ -1011,6 +1011,17 @@ dialog[open] {
     &:has(.resume-wrapper) {
       background-color: var(--clr-bg-body);
     }
+
+    &:has(.portfolio-preview-image-wrapper) .portfolio-preview-image-wrapper {
+      height: 100%;
+
+      & img {
+        object-fit: cover;
+        inline-size: 100%;
+        block-size: 100%;
+        block-size: stretch;
+      }
+    }
   }
 
   &:has(.resume-wrapper) {
@@ -1063,6 +1074,10 @@ dialog[open] {
 
   &:is([aria-selected="true"]) {
     background-color: var(--clr-brand-accent-2);
+  }
+
+  @media (width < 400px) {
+    flex-grow: 1;
   }
 }
 
@@ -1219,6 +1234,11 @@ dialog[open] {
 [data-theme="apple"] {
   .theme-toggle {
     --_bottom: calc(100vh - (var(--apple-task-bar-offset) - 0.5em));
+    --_bottom: calc(100dvh - (var(--apple-task-bar-offset) - 0.5em));
+    --_bottom: calc(
+      100dvh - var(--apple-task-bar-offset) + 0.5em +
+        env(safe-area-inset-bottom, 0px)
+    );
   }
 
   /* NAVBAR Component in APPLE Theme */
@@ -1246,9 +1266,10 @@ dialog[open] {
     position: fixed;
     left: 0;
     right: 0;
-    bottom: 1rem;
+    bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
     padding-inline: 1rem;
     overflow-x: auto;
+    background-color: inherit;
   }
 
   & .footer:has(.taskbar)::-webkit-scrollbar {
@@ -1322,6 +1343,7 @@ dialog[open] {
 
   /* DIALOG Component in APPLE Theme */
   dialog[open] {
+    border-width: 0.1em;
     --_pos-block: var(--nav-bar-height)
       calc(100% - var(--apple-task-bar-offset));
 
