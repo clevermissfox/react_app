@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import ThemeContext from "./ThemeContext";
 
 const THEMES = {
@@ -6,27 +6,51 @@ const THEMES = {
   MICROSOFT: "microsoft",
 };
 
+const STORAGE_KEY = "preferred-theme";
+
 export default function ThemeProvider({ children }) {
-  const [isAppleTheme, setIsAppleTheme] = useState(true); // Default to Apple theme
-  const [theme, setTheme] = useState(THEMES.APPLE); // Initialize with Apple theme
+  const timeoutRef = useRef(null);
+
+  const [theme, setTheme] = useState(() => {
+    try {
+      const savedTheme = localStorage.getItem(STORAGE_KEY);
+      return savedTheme === THEMES.MICROSOFT ? THEMES.MICROSOFT : THEMES.APPLE;
+    } catch {
+      return THEMES.APPLE;
+    }
+  });
+
+  const isAppleTheme = theme === THEMES.APPLE;
 
   const toggleTheme = () => {
-    setIsAppleTheme((prev) => !prev); // Toggle the theme state
+    const nextTheme = theme === THEMES.APPLE ? THEMES.MICROSOFT : THEMES.APPLE;
+
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
+    timeoutRef.current = setTimeout(() => {
+      setTheme(nextTheme);
+      timeoutRef.current = null;
+    }, 100);
   };
 
   useEffect(() => {
-    // Add a slight delay before applying the new theme to allow for smooth transitions
-    const newTheme = isAppleTheme ? THEMES.APPLE : THEMES.MICROSOFT;
-    const timeoutId = setTimeout(() => {
-      setTheme(newTheme);
-    }, 100); // Adjust the delay as needed
-
-    return () => clearTimeout(timeoutId); // Cleanup timeout on unmount or theme change
-  }, [isAppleTheme]);
+    document.documentElement.setAttribute("data-theme", theme);
+    try {
+      localStorage.setItem(STORAGE_KEY, theme);
+    } catch {
+      console.error("Failed to save theme preference to localStorage.");
+    }
+  }, [theme]);
 
   useEffect(() => {
-    document.documentElement.setAttribute("data-theme", theme); // Set data-theme attribute
-  }, [theme]);
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
 
   return (
     <ThemeContext.Provider value={{ theme, isAppleTheme, toggleTheme }}>

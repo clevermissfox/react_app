@@ -2,7 +2,7 @@ import { useContext, useRef, useEffect } from "react";
 import ThemeContext from "../context/ThemeContext";
 import { useDialog } from "../context/DialogContext";
 
-export default function Dialog({ id, classes, children }) {
+export default function Dialog({ id, classes, parentAppId, children }) {
   const { theme } = useContext(ThemeContext);
   const dialogRef = useRef(null);
   const {
@@ -14,8 +14,8 @@ export default function Dialog({ id, classes, children }) {
   } = useDialog();
 
   useEffect(() => {
-    registerDialog(id);
-  }, [id, registerDialog]);
+    registerDialog(id, { parentAppId }); // Pass parentAppId
+  }, [id, parentAppId, registerDialog]);
 
   // Get dialog state from context
   const {

@@ -2,7 +2,7 @@ import MicrosoftButtonApplication from "./MicrosoftButtonApplication";
 
 export default function MicrosoftDesktop({ appIcons }) {
   return (
-    <div className="microsoft-desktop">
+    <div className="microsoft-desktop grid">
       {appIcons.map(
         (icon) =>
           !icon.isAppleOnly && (
@@ -15,7 +15,7 @@ export default function MicrosoftDesktop({ appIcons }) {
               handleClick={icon.handleClick}
               disabled={icon.disabled ? icon.disabled : false}
             />
-          )
+          ),
       )}
     </div>
   );

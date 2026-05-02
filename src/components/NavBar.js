@@ -6,7 +6,6 @@ import BatteryStatusIcon from "./BatteryStatusIcon";
 export default function NavBar({ appIcons, fetchPortfolioData }) {
   const { theme } = useContext(ThemeContext);
   const { dialogs, openDialog, toggleMinimizeDialog } = useDialog();
-  const portfolioItemDialog = dialogs["portfolio-item"];
   const startContextMenuPopoverRef = useRef();
   // Initialize both date and time with their current values
   const [date, setDate] = useState(() => getDate(theme));
@@ -66,14 +65,20 @@ export default function NavBar({ appIcons, fetchPortfolioData }) {
     return () => clearInterval(intervalId);
   }, []); // Empty dependency array means this effect runs once on mount
 
-  // Filter minimized dialogs and map to their appIcons
   const minimizedDialogs = Object.entries(dialogs)
-    .filter(([id, dialog]) => dialog.isMinimized)
+    .filter(
+      ([id, dialog]) => dialog.isMinimized && !id.startsWith("portfolio-item-"),
+    )
     .map(([id]) => {
-      // Find matching app icon by dialogId
       return appIcons.find((icon) => icon.dialogId === id);
     })
-    .filter(Boolean); // Remove undefined if no icon found
+    .filter(Boolean);
+
+  const minimizedPortfolioItems = Object.entries(dialogs)
+    .filter(
+      ([id, dialog]) => id.startsWith("portfolio-item-") && dialog.isMinimized,
+    )
+    .sort((a, b) => (b[1].lastMinimizedAt || 0) - (a[1].lastMinimizedAt || 0));
 
   function handleDialogToggle(dialogId) {
     const dialog = dialogs[dialogId];
@@ -129,6 +134,7 @@ export default function NavBar({ appIcons, fetchPortfolioData }) {
               <a
                 href="mailto:connect@edicodesigns.com"
                 target="_blank"
+                rel="noopener noreferrer"
                 onClick={() => {
                   closePopover();
                 }}
@@ -164,49 +170,26 @@ export default function NavBar({ appIcons, fetchPortfolioData }) {
                 />
               </button>
             ))}
-          {portfolioItemDialog?.isMinimized && (
-            <button
-              type="button"
-              className="portfolio-item-taskbar-btn"
-              style={{ width: "1.5em", height: "1.5em" }}
-              title="Portfolio Item"
-              aria-label="Restore Portfolio Item"
-              onClick={() => toggleMinimizeDialog("portfolio-item")}
-            >
-              {/* Use a generic portfolio icon or thumbnail */}
-              <img
-                src="/assets/icons/microsoft/icon-windows_folder-open.svg" // or any icon you prefer
-                alt="Portfolio Item"
-              />
-            </button>
-          )}
-          {/* <button type="button">
-            <img
-              src="/assets/icons/microsoft/icon-windows_chrome-logo.svg"
-              alt=""
-            />
-          </button>
-          <button type="button">
-            <img
-              src="/assets/icons/microsoft/icon-windows_chrome-logo.svg"
-              alt=""
-            />
-          </button>
-          <button type="button">
-            <img
-              src="/assets/icons/microsoft/icon-windows_chrome-logo.svg"
-              alt=""
-            />
-          </button>
-          <button type="button">
-            <img
-              src="/assets/icons/microsoft/icon-windows_chrome-logo.svg"
-              alt=""
-            />
-          </button> */}
+          {minimizedPortfolioItems.length > 0 &&
+            minimizedPortfolioItems.map(([dialogId]) => (
+              <button
+                key={dialogId}
+                type="button"
+                className="portfolio-item-taskbar-btn"
+                style={{ width: "1.5em", height: "1.5em" }}
+                title="Portfolio Item"
+                aria-label="Restore Portfolio Item"
+                onClick={() => toggleMinimizeDialog(dialogId)}
+              >
+                <img
+                  src="/assets/icons/microsoft/icon-windows_folder-open.svg"
+                  alt="Portfolio Item"
+                />
+              </button>
+            ))}
         </div>
       )}
-      <div className="nav-bar-tools row ai-cen gap-quarter">
+      <div className="nav-bar-tools row ai-cen gap-quarter jc-end">
         <div className="nav-bar-tool" aria-label="bluetooth">
           <img
             src="/assets/icons/generic/icon-generic_bluetooth.svg"

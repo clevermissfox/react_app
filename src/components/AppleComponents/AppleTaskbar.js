@@ -8,10 +8,13 @@ export default function AppleTaskbar({ appIcons }) {
     <div className="taskbar">
       {appIcons.map((icon) => {
         const dialogId = icon.dialogId;
-        const dialog = dialogs[dialogId] || {};
-        const showWhiteDot = dialog.isOpen && dialog.isMinimized;
-        // Combine existing classes with the dot indicator class
-        const combinedClasses = showWhiteDot
+        const hasActiveInGroup = Object.entries(dialogs).some(
+          ([id, d]) =>
+            (d.isOpen || d.isMinimized) &&
+            (id === dialogId || d.parentAppId === dialogId),
+        );
+
+        const combinedClasses = hasActiveInGroup
           ? `${icon.classes || ""} has-dot`.trim()
           : icon.classes;
 

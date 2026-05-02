@@ -3,16 +3,48 @@ import { useDialog } from "../context/DialogContext";
 export default function ApplicationData({ theme, ...props }) {
   const { dialogs, openDialog, toggleMinimizeDialog } = useDialog();
   // Helper to create the correct onClick handler for each dialog
+  // BEFORE EXPANDING PORTFOLIO-ITEM MINIMIZATION
+  // function createHandleClick(dialogId, customHandler) {
+  //   return () => {
+  //     const dialog = dialogs[dialogId];
+  //     if (!dialog?.isOpen) {
+  //       if (customHandler) customHandler();
+  //       openDialog(dialogId);
+  //     } else if (dialog.isMinimized) {
+  //       toggleMinimizeDialog(dialogId); // Restore
+  //     } else {
+  //       toggleMinimizeDialog(dialogId); // Minimize
+  //     }
+  //   };
+  // }
   function createHandleClick(dialogId, customHandler) {
     return () => {
-      const dialog = dialogs[dialogId];
-      if (!dialog?.isOpen) {
+      if (theme === "apple") {
+        const groupedDialogs = Object.entries(dialogs).filter(
+          ([id, dialog]) => id === dialogId || dialog.parentAppId === dialogId,
+        );
+
+        const minimizedDialogs = groupedDialogs
+          .filter(([, dialog]) => dialog.isOpen && dialog.isMinimized)
+          .sort(
+            (a, b) => (b[1].lastMinimizedAt || 0) - (a[1].lastMinimizedAt || 0),
+          );
+
+        if (minimizedDialogs.length > 0) {
+          toggleMinimizeDialog(minimizedDialogs[0][0]);
+          return;
+        }
+      }
+
+      const parentDialog = dialogs[dialogId];
+
+      if (!parentDialog?.isOpen) {
         if (customHandler) customHandler();
         openDialog(dialogId);
-      } else if (dialog.isMinimized) {
-        toggleMinimizeDialog(dialogId); // Restore
+      } else if (parentDialog.isMinimized) {
+        toggleMinimizeDialog(dialogId);
       } else {
-        toggleMinimizeDialog(dialogId); // Minimize
+        toggleMinimizeDialog(dialogId);
       }
     };
   }

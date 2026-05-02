@@ -1,57 +1,94 @@
 import { createContext, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+
 const DialogContext = createContext();
 
 export const DialogProvider = ({ children }) => {
   const [dialogs, setDialogs] = useState({});
   const navigate = useNavigate();
 
-  const registerDialog = (id) => {
+  const createDialogState = (options = {}) => ({
+    isOpen: false,
+    isMinimized: false,
+    isMaximized: false,
+    zIndex: "auto",
+    parentAppId: null,
+    ...options,
+  });
+
+  const getHighestZIndex = (dialogMap) => {
+    let highestZIndex = 0;
+
+    Object.keys(dialogMap).forEach((key) => {
+      const dialog = dialogMap[key];
+      if (
+        dialog.isOpen &&
+        !dialog.isMinimized &&
+        typeof dialog.zIndex === "number" &&
+        dialog.zIndex > highestZIndex
+      ) {
+        highestZIndex = dialog.zIndex;
+      }
+    });
+
+    return highestZIndex;
+  };
+
+  const registerDialog = (id, options = {}) => {
     setDialogs((prev) => {
-      // Avoid overwriting existing dialogs
       if (prev[id]) return prev;
+
       return {
         ...prev,
-        [id]: {
-          ...prev[id],
-          isOpen: false,
-          isMinimized: false,
-          isMaximized: false,
-          zIndex: "auto",
-        },
+        [id]: createDialogState(options),
       };
     });
   };
 
-  const openDialog = (id) => {
-    if (dialogs[id]?.isOpen) return;
-    setDialogs((prev) => {
-      let highestZIndex = 0;
-      Object.keys(prev).forEach((key) => {
-        const dialog = prev[key];
-        if (
-          dialog.isOpen &&
-          typeof dialog.zIndex === "number" &&
-          dialog.zIndex > highestZIndex
-        ) {
-          highestZIndex = dialog.zIndex;
-        }
-      });
+  const buildBringToFrontState = (prev, id, options = {}) => {
+    const highestZIndex = getHighestZIndex(prev);
+    const newZIndex = highestZIndex + 10;
+    const existingDialog = prev[id];
 
-      const newZIndex = highestZIndex + 10;
-      return {
-        ...prev,
-        [id]: { ...prev[id], isOpen: true, zIndex: newZIndex },
-      };
+    return {
+      ...prev,
+      [id]: createDialogState({
+        ...existingDialog,
+        ...options,
+        isOpen: true,
+        isMinimized: false,
+        zIndex: newZIndex,
+      }),
+    };
+  };
+
+  const bringToFront = (id, options = {}) => {
+    setDialogs((prev) => buildBringToFrontState(prev, id, options));
+  };
+
+  const openDialog = (id, options = {}) => {
+    setDialogs((prev) => {
+      const dialog = prev[id];
+
+      if (dialog?.isOpen && !dialog?.isMinimized) return prev;
+
+      return buildBringToFrontState(prev, id, options);
     });
   };
 
   const closeDialog = (id) => {
     setDialogs((prev) => ({
       ...prev,
-      [id]: { ...prev[id], isOpen: false, zIndex: "auto" },
+      [id]: {
+        ...createDialogState(),
+        ...prev[id],
+        isOpen: false,
+        isMinimized: false,
+        isMaximized: false,
+        zIndex: "auto",
+      },
     }));
-    // If the dialog was opened via a route, navigate back to the home route
+
     if (window.location.pathname === `/${id}`) {
       navigate("/");
     }
@@ -60,20 +97,44 @@ export const DialogProvider = ({ children }) => {
   const minimizeDialog = (id) => {
     setDialogs((prev) => ({
       ...prev,
-      [id]: { ...prev[id], isMinimized: true },
+      [id]: {
+        ...createDialogState(),
+        ...prev[id],
+        isMinimized: true,
+        lastMinimizedAt: Date.now(),
+      },
     }));
   };
 
   const toggleMinimizeDialog = (id) => {
     setDialogs((prev) => {
       const dialog = prev[id];
-      // Only toggle if dialog is open
       if (!dialog?.isOpen) return prev;
+
+      const willBeMinimized = !dialog.isMinimized;
+
+      if (!willBeMinimized) {
+        const highestZIndex = getHighestZIndex(prev);
+        const newZIndex = highestZIndex + 10;
+
+        return {
+          ...prev,
+          [id]: {
+            ...createDialogState(),
+            ...dialog,
+            isMinimized: false,
+            zIndex: newZIndex,
+          },
+        };
+      }
+
       return {
         ...prev,
         [id]: {
+          ...createDialogState(),
           ...dialog,
-          isMinimized: !dialog.isMinimized,
+          isMinimized: true,
+          lastMinimizedAt: Date.now(),
         },
       };
     });
@@ -82,33 +143,17 @@ export const DialogProvider = ({ children }) => {
   const maximizeDialog = (id) => {
     setDialogs((prev) => {
       const dialog = prev[id];
-      const isMaximized = !dialog.isMaximized;
-      let newZIndex = dialog.zIndex;
+      if (!dialog) return prev;
 
-      if (isMaximized) {
-        // Maximizing: find the highest z-index and set this dialog's z-index 10 higher
-        let highestZIndex = 0;
-        Object.keys(prev).forEach((key) => {
-          const otherDialog = prev[key];
-          if (
-            otherDialog.isOpen &&
-            typeof otherDialog.zIndex === "number" &&
-            otherDialog.zIndex > highestZIndex
-          ) {
-            highestZIndex = otherDialog.zIndex;
-          }
-        });
-        newZIndex = highestZIndex + 10;
-      } else {
-        // Unmaximizing: revert to the previous z-index
-        newZIndex = 10;
-      }
+      const isMaximized = !dialog.isMaximized;
+      const newZIndex = isMaximized ? getHighestZIndex(prev) + 10 : 10;
 
       return {
         ...prev,
         [id]: {
+          ...createDialogState(),
           ...dialog,
-          isMaximized: isMaximized,
+          isMaximized,
           isMinimized: false,
           zIndex: newZIndex,
         },
@@ -126,6 +171,7 @@ export const DialogProvider = ({ children }) => {
         minimizeDialog,
         toggleMinimizeDialog,
         maximizeDialog,
+        bringToFront,
       }}
     >
       {children}
